@@ -1,0 +1,27 @@
+.table{
+    width: 80%;
+    border-collapse:collapse;
+   
+    border-spacing: 1rem;
+}
+.table-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; 
+}
+.tbody>tr>td{
+   text-align: center;
+  
+}
+.tbody>tr>td{
+     padding-top: 3rem;
+}
+.table th, .table td {
+    padding: 8px;
+    border-bottom: 1px solid grey;
+  }
+  
+  .table th {
+    background-color: black;
+  }
