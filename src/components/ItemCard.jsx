@@ -169,7 +169,7 @@ console.log(formattedDate);
     console.log(cartn);
     try {
       console.log("started")
-    const response = await fetch(`http://localhost:5000/api/carts/${cartn}`, {
+    const response = await fetch(`https://tech-cart-one.vercel.app/api/carts/${cartn}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -187,6 +187,7 @@ console.log(formattedDate);
   }
 
   const deleteCart = async () => {
+
     const cartno=localStorage.getItem("cartno")
     if(cartno==0){
       return;
@@ -444,6 +445,7 @@ console.log(formattedDate);
         <table className="table">
           <thead style={{color:'white'}} className="">
           <tr>
+          
             <th>Product</th>
             
             <th>Price</th>
@@ -456,6 +458,7 @@ console.log(formattedDate);
               return (
                 <tr >
                 {console.log(item)}
+             
                <td>{item.Product}</td>
                <td>{item.Price}</td>
                

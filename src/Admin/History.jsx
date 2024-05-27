@@ -32,7 +32,7 @@ const History = () => {
   useEffect(() => {
     const filterHistory = async () => {
       try {
-        const response = await axios.post(' http://localhost:5000/filterHistory', inputValues);
+        const response = await axios.post(' https://tech-cart-one.vercel.app/filterHistory', inputValues);
         console.log(response.data)
         setFilteredData(response.data);
       } catch (error) {
@@ -163,17 +163,7 @@ const History = () => {
                   />
                 )}
               </th>
-              <th>
-                Phone <IoFilter onClick={() => handleFilterIconClick('phone')} />
-                {showPhoneInput && (
-                  <input
-                    type="text"
-                    value={inputValues.phone}
-                    onChange={(e) => handleInputChange('phone', e.target.value)}
-                    style={{ color: 'black' }}
-                  />
-                )}
-              </th>
+             
               <th>Email</th>
               <th>
                 Order ID <IoFilter onClick={() => handleFilterIconClick('orderId')} />
@@ -187,7 +177,7 @@ const History = () => {
                 )}
               </th>
               <th>Amount</th>
-              <th>Payment</th>
+             
               
             </tr>
           </thead>
@@ -198,11 +188,11 @@ const History = () => {
                 <td>{item.date}</td>
                 <td>{item.Cartno}</td>
                 <td>{item.Name}</td>
-                <td>{item.Phone}</td>
+                
                 <td>{item.Email}</td>
                 <td><Link to={`/details/${item.OrderId}`}>{item.OrderId}</Link></td>
                 <td>{item.Amount}</td>
-                <td>{item.Payment}</td>
+               
               </tr>
             ))
           ) : (

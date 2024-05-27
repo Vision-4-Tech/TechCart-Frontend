@@ -10,7 +10,7 @@ const Details = () => {
     const fetchData = async () => {
       try {
         // Fetch data from the Transaction API using orderId in the request body
-        const response = await fetch('https://tech-cart-two.vercel.app/OrderId', {
+        const response = await fetch('https://tech-cart-one.vercel.app/OrderId', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -37,7 +37,7 @@ const Details = () => {
         <thead style={{color:'white'}}>
           <tr>
            
-            <th>Date</th>
+            
             <th>Cartno</th>
             <th>Name</th>
             <th>Phone</th>
@@ -49,7 +49,6 @@ const Details = () => {
         <tbody className='tbody'>
           {transactionData.map((item) => (
             <tr key={item._id}>
-              <td>{item.Date}</td>
               <td>{item.Cartno}</td>
               <td>{item.Name}</td>
               <td>{item.Phone}</td>

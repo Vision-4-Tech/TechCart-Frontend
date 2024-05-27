@@ -5,7 +5,7 @@ const Customer= () => {
   const [Customer, setCustomer] = useState([]);
 
   useEffect(() => {
-    const apiUrl = ' https://tech-cart-two.vercel.app/Customer';
+    const apiUrl = 'https://tech-cart-one.vercel.app/Customer';
 
     // Fetch data from the API directly inside the useEffect
     (async () => {
