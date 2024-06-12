@@ -23,7 +23,7 @@ const Navbar = () => {
   const Logout=()=>{
     localStorage.removeItem("user");
     localStorage.removeItem("userDetails");
-    navigate("/login")
+    navigate("/login");
     
   }
   
