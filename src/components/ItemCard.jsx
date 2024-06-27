@@ -6,10 +6,9 @@ import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
+
 import DialogTitle from '@mui/material/DialogTitle';
-import Items from "./items";
-import { useSearchParams,Link } from "react-router-dom";
+
 import { useLocation } from "react-router-dom";
 import {Snackbar} from "@mui/material";
 import { useNavigate } from "react-router-dom";
@@ -20,7 +19,7 @@ const ItemCard = () => {
   const [total,setTotal]=useState(0);
   const [cartid,setCartid]=useState(0);
   const [cart,setCart]=useState(0);
-  const [sessionid,setSessionId]=useState();
+  // const [sessionid,setSessionId]=useState();
   const location = useLocation();
   const navigate = useNavigate();
   const [deleteInitiated, setDeleteInitiated] = useState(false);
@@ -472,9 +471,9 @@ console.log(formattedDate);
         </table>
         <Snackbar
         open={show}
-        autoHideDuration={6000}
+        autoHideDuration={4000}
         onClose={handleCloseSnackbar}
-        message={`Pament Sucessfull ${result.msg}`}
+        message={`Payment Sucessfull ${result.msg}`}
       />
         {cartItems.length>0 && <h3 style={{display:'flex',  justifyContent:'flex-end',marginRight:'18rem'}}  className="m-5 text-lg">Total : {total}</h3>} 
         <div style={{display:'flex',justifyContent:'flex-end',marginRight:'17rem'}}>

@@ -1,5 +1,5 @@
 import React from 'react'
-import {useState,useEffect} from 'react'
+import {useState} from 'react'
 import { Typography,Box,Stack } from '@mui/material'
 import SideComponent from './SideComponent'
 import ItemCard from './ItemCard'

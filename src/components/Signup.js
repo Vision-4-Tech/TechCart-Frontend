@@ -5,13 +5,11 @@ import user_icon from '../components/assets/Assets/person.png'
 import email_icon from '../components/assets/Assets/email.png'
 import password_icon from '../components/assets/Assets/password.png'
 import './Signup.css'
-import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch, { SwitchProps } from '@mui/material/Switch';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
+
+import Switch from '@mui/material/Switch';
+
 import { styled } from '@mui/material/styles';
-import Snackbar from '@mui/material/Snackbar';
+
 
   
 
@@ -21,14 +19,14 @@ const  Signup=()=>{
   const [email,setemail]=useState();
   const [password,setpassword]=useState();
   const [secretkey,setSecretKey] = useState();
-  const [correct,setCorrect]=useState(false);
+  // const [correct,setCorrect]=useState(false);
   const navigate=useNavigate();
   const [ error,setError]=useState("");
   const [isAdminChecked, setIsAdminChecked] = useState(false);
   const [type,setType]=useState("admin")
   const handleAdminSwitchChange = () => {
     setIsAdminChecked(!isAdminChecked);
-    if(isAdminChecked==false){
+    if(isAdminChecked===false){
       setType("user")
     }
     else{

@@ -1,20 +1,17 @@
 
-import React, { useEffect, useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom';
-import Items from './items';
-import SideBar from './SideBar';
-import Navbar from './Navbar';
-import Button from '@mui/material/Button';
+import React, { useEffect } from 'react'
+import {  useNavigate } from 'react-router-dom';
 
-import { useSearchParams } from 'react-router-dom';
+import SideBar from './SideBar'
+import Navbar from './Navbar';
+
+
+
 
 const Home = () => {
-  const [open, setOpen] = React.useState(false);
-  const [searchParam, setSearchParam] = useSearchParams();
+ 
   const navigate = useNavigate();
 
-
-  
   useEffect(() => {
     // Check if user details exist in localStorage
     const userDetails = localStorage.getItem('userDetails');
