@@ -78,7 +78,7 @@ console.log(formattedDate);
       return;
     }
     setShow(false);
-    window.location.reload;
+    window.location.reload();
   };
   useEffect(() => {
     session();
@@ -153,7 +153,7 @@ console.log(formattedDate);
       
       }
       setCartNumber();
-      window.location.reload;
+      window.location.reload();
       setShow(true);
      
       
@@ -205,7 +205,7 @@ console.log(formattedDate);
         const data = await response.json();
         console.log(data);
         setCartItems([]);
-        window.location.reload;
+        window.location.reload();
       } else {
         const errorMessage = await response.text();
         console.error(`Error deleting cart: ${errorMessage}`);
