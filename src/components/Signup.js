@@ -9,7 +9,7 @@ import './Signup.css'
 import Switch from '@mui/material/Switch';
 
 import { styled } from '@mui/material/styles';
-
+import Snackbar from '@mui/material/Snackbar';
 
   
 
@@ -19,7 +19,7 @@ const  Signup=()=>{
   const [email,setemail]=useState();
   const [password,setpassword]=useState();
   const [secretkey,setSecretKey] = useState();
-  // const [correct,setCorrect]=useState(false);
+  const [correct,setCorrect]=useState(false);
   const navigate=useNavigate();
   const [ error,setError]=useState("");
   const [isAdminChecked, setIsAdminChecked] = useState(false);

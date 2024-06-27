@@ -104,14 +104,14 @@ const Inventory = () => {
       setOpen(false);
       if(response.status===200){
         
-        res.body("Product Inserted Successfully")
+        response.body("Product Inserted Successfully")
         setProductId(0);
         setProductName("");
         setPrice(0);
         
       }
       else{
-        res.body("Not inserted");
+        response.body("Not inserted");
       }
       }
     

@@ -19,7 +19,7 @@ const ItemCard = () => {
   const [total,setTotal]=useState(0);
   const [cartid,setCartid]=useState(0);
   const [cart,setCart]=useState(0);
-  // const [sessionid,setSessionId]=useState();
+  const [sessionid,setSessionId]=useState();
   const location = useLocation();
   const navigate = useNavigate();
   const [deleteInitiated, setDeleteInitiated] = useState(false);
@@ -150,12 +150,12 @@ console.log(formattedDate);
         
         localStorage.removeItem('sessionId')
         
-        window.location.reload;
+      
       }
       setCartNumber();
       window.location.reload;
       setShow(true);
-      window.location.reload;
+     
       
     }
   }, [result.msg, deleteInitiated]);

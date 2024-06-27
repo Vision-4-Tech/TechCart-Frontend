@@ -1,5 +1,5 @@
-import React from 'react';
-import { useParams, useNavigate} from 'react-router-dom';
+import React, {  useState } from 'react';
+import { useParams, useSearchParams ,useNavigate} from 'react-router-dom';
 
 import { Stack } from '@mui/material';
 import { Categories } from './utils/constant';
@@ -8,7 +8,7 @@ import { Categories } from './utils/constant';
 const SideComponent = ({ selectedCategory, setSelectedCategory,state }) => {
 
   const navigate=useNavigate()
-
+  const [searchParam, setSearchParam] = useSearchParams();
   const params=useParams();
   console.log(params)
   const handleCategoryClick = (categoryName) => {
