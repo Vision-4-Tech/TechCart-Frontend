@@ -1,5 +1,5 @@
 import { React, useEffect, useState } from "react";
-
+import axios from 'axios'
 import "./ItemCard.css";
 import { Button } from "@mui/material";
 import TextField from '@mui/material/TextField';
@@ -327,79 +327,126 @@ console.log(formattedDate);
       }
       }
     }
- const paymentHandler=async (e)=>{
-  console.log("payment start")
-        const response = await fetch("https://tech-cart-one.vercel.app/order",{
-             method:"POST",
-             body:JSON.stringify({
-              amount,
-              currency,
-             receipt: receiptId
-             }),
-             headers:{
-              "COntent-Type":"application/json",
-             },
-        });
-        const order=await response.json();
-        console.log("order",order);
-        console.log(order.id);
-        var options = {
-          "key": "rzp_test_L1JPeGnZbS2ffv", 
-          amount,
-          currency,
-          "name": "Tech Cart ", 
-          "description": "Test Transaction",
-          "image": "",
-          "order_id": order.id, 
-          "handler":async function  (response){
-             const body={...response};
-             const validateRes=await fetch("https://tech-cart-one.vercel.app/validate",{
-              method:"POST",
-              body:JSON.stringify(body),
-              headers:{
-                "Content-Type":"application/json"
-              },
-             });
-             const jsonRes=await validateRes.json();
-             setResult(jsonRes)
 
-             console.log(jsonRes);
-          },
-          "prefill": { 
-              "name": "Suhas", 
-              "email": "suhas123.p@gmail.com", 
-              "contact": "8792713154"   
-          },
-          "notes": {
-              "address": "Razorpay Corporate Office"
-          },
-          "theme": {
-              "color": "#3399cc"
-          }
-      };
-      var rzp1 = new Razorpay(options);
-      rzp1.on('payment.failed', function (response){
-              // alert(response.error.code);
-              // alert(response.error.description);
-              // alert(response.error.source);
-              // alert(response.error.step);
-              // alert(response.error.reason);
-              // alert(response.error.metadata.order_id);
-              // alert(response.error.metadata.payment_id);
+    const loadScript = (src) => {
+      return new Promise((resolve) => {
+        const script = document.createElement("script");
+        script.src = src;
+    
+        script.onload = () => {
+          resolve(true);
+        };
+        script.onerror = () => {
+          resolve(false);
+        };
+    
+        document.body.appendChild(script);
       });
+    };
+ const paymentHandler=async (e)=>{
+  let data=JSON.stringify({
+    amount:amount*100,
+    currency:'INR'
+  })
 
-      rzp1.open();
-      e.preventDefault();
+  let config={
+    method:"post",
+    maxBodyLength:Infinity,
+    url:"https://tech-cart-one.vercel.app/order",
+    headers:{
+            'Content-Type':'application/json'
+    },
+    data:data
+  }
 
-
+  axios.request(config)
+  .then((response)=>{
+    console.log(JSON.stringify(response.data));
+     handleRazorpayScreen(response.data.amount)
+  })
+  .catch((error)=>{
+    console.log("error",error)
+  })
+      
  }
- 
+ const handleRazorpayScreen=async(amount)=>{
+  console.log("started Screen")
+  const res =await loadScript("https://checkout.razorpay.com/v1/checkout.js")
+  console.log(res)
+
+  if (!res) {
+    alert('Razorpay SDK failed to load. Are you online?');
+    return;
+  }
+  
+  const options={
+    key:"rzp_test_L1JPeGnZbS2ffv",
+    amount:amount,
+    currency:'INR',
+    name:"Tech Cart",
+    description:"payment to tech cart",
+    image:"image",
+    handler:async function  (response){
+      const body={...response};
+      const validateRes=await fetch("https://tech-cart-one.vercel.app/validate",{
+       method:"POST",
+       body:JSON.stringify(body),
+       headers:{
+         "Content-Type":"application/json"
+       },
+      });
+      const jsonRes=await validateRes.json();
+      setResult(jsonRes)
+
+      console.log(jsonRes);
+   },
+    prefil:{
+      name:"Suhas",
+      email:"suhas123.p@mail.com"
+    },
+    theme:{
+      color:"#F4C430"
+    }
+  }
+
+  console.log("open")
+  const paymentObject=new window.Razorpay(options)
+  console.log(paymentObject)
+  paymentObject.open();
+//   console.log(responseId);
+}
+
+// const handleEnterKey = (e) => {
+//   if (e.key === 'Enter') {
+//     console.log('Cart Number entered:', cartNumber);
+//   }
+// };
  
  const handleEnterKey = (e) => {
-  if (e.key === 'Enter') {
-    console.log('Cart Number entered:', cartNumber);
+  let data=JSON.stringify({
+    amount:amount*100,
+    currency:'INR'
+  })
+
+  let config={
+    method:"post",
+    maxBodyLength:Infinity,
+    url:"https://tech-cart-one.vercel.app/order",
+    headers:{
+            'Content-Type':'application/json'
+    },
+    data:data
   }
-};
+
+  axios.request(config)
+  .then((response)=>{
+    console.log(JSON.stringify(response.data));
+     handleRazorpayScreen(response.data.amount)
+  })
+  .catch((error)=>{
+    console.log("error",error)
+  })
+}
   
   return (
     <div className="">
