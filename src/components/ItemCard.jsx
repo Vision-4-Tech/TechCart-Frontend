@@ -69,16 +69,27 @@ const formattedDate = `${currentDate.getFullYear()}-${currentDate.getMonth()+1}-
   const cart_no = localStorage.getItem("cartno")?localStorage.getItem("cartno"):"";
   useEffect(() => {
     // Join the cart room
-       const socket = io(URL);
-    socket.emit("joinCartRoom", cart_no);
+        const socket = io(URL, {
+          transports: ["websocket", "polling"],
+          reconnectionAttempts: 5,
+        });
 
-    // Listen for updates to the cart
-    socket.on("cartUpdated", (updatedCart) => {
-      console.log("Cart updated:", updatedCart.items);
-      
-        setCartItems(updatedCart.items)
-     
-    });
+        socket.emit("joinCartRoom", cart_no);
+
+        // Listen for updates to the cart
+        socket.on("cartUpdated", (updatedCart) => {
+          console.log("Cart updated:", updatedCart.items);
+          setCartItems(updatedCart.items);
+        });
+
+        // Error handling
+        socket.on("connect_error", (err) => {
+          console.error("Connection error:", err);
+        });
+
+        socket.on("disconnect", (reason) => {
+          console.log("Disconnected:", reason);
+        });
 
     // Clean up on component unmount
     return () => {
