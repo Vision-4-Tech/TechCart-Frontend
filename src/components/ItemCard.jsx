@@ -76,13 +76,13 @@ const formattedDate = `${currentDate.getFullYear()}-${currentDate.getMonth()+1}-
 
         socket.emit("joinCartRoom", cart_no);
 
-        // Listen for updates to the cart
+ 
         socket.on("cartUpdated", (updatedCart) => {
           console.log("Cart updated:", updatedCart.items);
           setCartItems(updatedCart.items);
         });
 
-        // Error handling
+       
         socket.on("connect_error", (err) => {
           console.error("Connection error:", err);
         });
