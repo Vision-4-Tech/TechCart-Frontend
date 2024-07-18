@@ -397,7 +397,7 @@ const formattedDate = `${currentDate.getFullYear()}-${currentDate.getMonth()+1}-
   let config={
     method:"post",
     maxBodyLength:Infinity,
-    url:`${URL}order`,
+    url:`${URL}/order`,
     headers:{
             'Content-Type':'application/json'
     },
@@ -483,7 +483,7 @@ const formattedDate = `${currentDate.getFullYear()}-${currentDate.getMonth()+1}-
   let config={
     method:"post",
     maxBodyLength:Infinity,
-    url:`${URL}order`,
+    url:`${URL}/order`,
     headers:{
             'Content-Type':'application/json'
     },
