@@ -556,7 +556,7 @@ const formattedDate = `${currentDate.getFullYear()}-${currentDate.getMonth()+1}-
             {cartItems && cartItems.map((item, id) => {
               return (
                 <tr>
-                  {console.log(item)}
+                  
 
                   <td>{item.Product}</td>
                   <td>{item.Price}</td>
