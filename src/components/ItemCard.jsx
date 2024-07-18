@@ -6,7 +6,7 @@ import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import io from 'socket.io-client';
+import io from "socket.io-client";
 import DialogTitle from '@mui/material/DialogTitle';
 
 import { useLocation } from "react-router-dom";
@@ -41,6 +41,33 @@ const formattedDate = `${currentDate.getFullYear()}-${currentDate.getMonth()+1}-
     phone: "",
     password: "",
   });
+  useEffect(() => {
+    // Join the cart room
+   const socket = io(URL, {
+     transports: ["websocket", "polling"], // Allow both transports
+     withCredentials: true,
+   });
+    console.log("started to connect socket");
+     socket.on("connect", () => {
+       console.log("Connected to the server", socket.id);
+     });
+
+    socket.emit("joinCartRoom", cart_no);
+
+    socket.on("cartUpdated", (updatedCart) => {
+      console.log("Cart updated:", updatedCart.items);
+      setCartItems(updatedCart.items);
+    });
+
+    socket.on("disconnect", (reason) => {
+      console.log("Disconnected:", reason);
+    });
+
+    // Clean up on component unmount
+    return () => {
+      socket.disconnect();
+    };
+  },[]);
   const userDetails = localStorage.getItem('userDetails');
   console.log(userDetails)
   
@@ -67,37 +94,7 @@ const formattedDate = `${currentDate.getFullYear()}-${currentDate.getMonth()+1}-
   }, [navigate]);
 
   const cart_no = localStorage.getItem("cartno")?localStorage.getItem("cartno"):"";
-  useEffect(() => {
-    // Join the cart room
-        const socket = io(URL, {
-          transports: ["websocket", "polling"],
-          withCredentials: true,
-        });
-         console.log("started to connect socket")
-        socket.on("connect",()=>{
-          console.log("Connected to the server",socket.id)
-        })
-
-        socket.emit("joinCartRoom", cart_no);
-
- 
-        socket.on("cartUpdated", (updatedCart) => {
-          console.log("Cart updated:", updatedCart.items);
-          setCartItems(updatedCart.items);
-        });
-
-       
-       
-
-        socket.on("disconnect", (reason) => {
-          console.log("Disconnected:", reason);
-        });
-
-    // Clean up on component unmount
-    return () => {
-      socket.disconnect();
-    };
-  },[]);
+  
   const calculateTotal = () => {
     let totalAmount = 0;
     for (const item of cartItems) {
