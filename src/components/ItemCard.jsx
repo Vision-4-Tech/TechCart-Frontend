@@ -33,7 +33,7 @@ const formattedDate = `${currentDate.getFullYear()}-${currentDate.getMonth()+1}-
   const [show,setShow]=useState(false);
  
   const state= location.state  ;
-   const URL = "https://tech-cart-one.vercel.app/";
+   const URL = "https://tech-cart-one.vercel.app";
   const [userData, setUserData] = useState({
     id:"",
     name: "",
@@ -126,7 +126,7 @@ const formattedDate = `${currentDate.getFullYear()}-${currentDate.getMonth()+1}-
           SessionId:sessionid2,
         };
   
-        fetch(`${URL}histories`, {
+        fetch(`${URL}/histories`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -156,7 +156,7 @@ const formattedDate = `${currentDate.getFullYear()}-${currentDate.getMonth()+1}-
             
           };
     
-          fetch(`${URL}Transactions`, {
+          fetch(`${URL}/Transactions`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -197,7 +197,7 @@ const formattedDate = `${currentDate.getFullYear()}-${currentDate.getMonth()+1}-
     
     try {
       console.log("started")
-    const response = await fetch(`${URL}api/carts/${cartn}`, {
+    const response = await fetch(`${URL}/api/carts/${cartn}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -220,7 +220,7 @@ const formattedDate = `${currentDate.getFullYear()}-${currentDate.getMonth()+1}-
       return;
     }
     try {
-      const response = await fetch(`${URL}deleteCart/${cartno}`, {
+      const response = await fetch(`${URL}/deleteCart/${cartno}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -252,7 +252,7 @@ const formattedDate = `${currentDate.getFullYear()}-${currentDate.getMonth()+1}-
   
     const fetchData = async () => {
       try {
-        const response = await fetch(`${URL}TempItems`, {
+        const response = await fetch(`${URL}/TempItems`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -334,7 +334,7 @@ const formattedDate = `${currentDate.getFullYear()}-${currentDate.getMonth()+1}-
     // Navigate to '/Cart' with props as email
     const cart_number_id=cart_no;
     if(cart_no==cart_number_id){
-      const response = await fetch(`${URL}CartNo`, {
+      const response = await fetch(`${URL}/CartNo`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
