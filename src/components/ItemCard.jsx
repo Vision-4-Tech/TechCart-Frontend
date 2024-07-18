@@ -71,7 +71,7 @@ const formattedDate = `${currentDate.getFullYear()}-${currentDate.getMonth()+1}-
     // Join the cart room
         const socket = io(URL, {
           transports: ["websocket", "polling"],
-          reconnectionAttempts: 5,
+          withCredentials: true,
         });
 
         socket.emit("joinCartRoom", cart_no);
