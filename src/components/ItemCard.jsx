@@ -63,7 +63,7 @@ const formattedDate = `${currentDate.getFullYear()}-${currentDate.getMonth()+1}-
 
     socket.on("disconnect", (reason) => {
       console.log("Disconnected:", reason);
-    },[cart_no]);
+    },[cart]);
 
     // Clean up on component unmount
     return () => {
@@ -528,6 +528,7 @@ const formattedDate = `${currentDate.getFullYear()}-${currentDate.getMonth()+1}-
       id="name"
       name="cart_no"
       label="Enter Cart number"
+      
       type="text"
       fullWidth
       variant="standard"
