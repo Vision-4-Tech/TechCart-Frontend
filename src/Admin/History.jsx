@@ -32,7 +32,10 @@ const History = () => {
   useEffect(() => {
     const filterHistory = async () => {
       try {
-        const response = await axios.post(' https://tech-cart-one.vercel.app/filterHistory', inputValues);
+        const response = await axios.post(
+          " https://tech-cart-6em1.vercel.app/filterHistory",
+          inputValues
+        );
         console.log(response.data)
         setFilteredData(response.data);
       } catch (error) {

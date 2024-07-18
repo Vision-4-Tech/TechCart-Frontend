@@ -88,19 +88,21 @@ const Inventory = () => {
     }
     try {
       
-      const response = await fetch("http://localhost:5000/products", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          product_id:productId,
-          Product:productName,
-          Price:price,
-          imageFile:imageFile
-        }),
-
-      });
+      const response = await fetch(
+        "https://tech-cart-6em1.vercel.app/products",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            product_id: productId,
+            Product: productName,
+            Price: price,
+            imageFile: imageFile,
+          }),
+        }
+      );
       setOpen(false);
       if(response.status===200){
         

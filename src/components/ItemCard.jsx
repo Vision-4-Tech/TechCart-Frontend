@@ -33,7 +33,7 @@ const formattedDate = `${currentDate.getFullYear()}-${currentDate.getMonth()+1}-
   const [show,setShow]=useState(false);
  
   const state= location.state  ;
-   const URL='http://localhost:5000'
+   const URL = "https://tech-cart-6em1.vercel.app/";
   const [userData, setUserData] = useState({
     id:"",
     name: "",
@@ -126,7 +126,7 @@ const formattedDate = `${currentDate.getFullYear()}-${currentDate.getMonth()+1}-
           SessionId:sessionid2,
         };
   
-        fetch(URL+histories, {
+        fetch(`${URL}/histories`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -156,7 +156,7 @@ const formattedDate = `${currentDate.getFullYear()}-${currentDate.getMonth()+1}-
             
           };
     
-          fetch(URL+Transactions, {
+          fetch(`${URL}/Transactions`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
