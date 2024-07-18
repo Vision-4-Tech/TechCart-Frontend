@@ -6,7 +6,7 @@ import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import io from "socket.io-client";
+import io from 'socket.io-client';
 import DialogTitle from '@mui/material/DialogTitle';
 
 import { useLocation } from "react-router-dom";
@@ -33,7 +33,7 @@ const formattedDate = `${currentDate.getFullYear()}-${currentDate.getMonth()+1}-
   const [show,setShow]=useState(false);
  
   const state= location.state  ;
-   const URL = "https://socket-limk.onrender.com";
+   const URL = "https://techcartbackend-zp4w.onrender.com";
   const [userData, setUserData] = useState({
     id:"",
     name: "",
@@ -41,9 +41,11 @@ const formattedDate = `${currentDate.getFullYear()}-${currentDate.getMonth()+1}-
     phone: "",
     password: "",
   });
+
+  const url = "https://socket-limk.onrender.com";
   useEffect(() => {
     // Join the cart room
-   const socket = io(URL, {
+   const socket = io(url, {
      transports: ["websocket", "polling"], // Allow both transports
      withCredentials: true,
    });
