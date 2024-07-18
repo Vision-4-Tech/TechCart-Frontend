@@ -63,7 +63,7 @@ const formattedDate = `${currentDate.getFullYear()}-${currentDate.getMonth()+1}-
 
     socket.on("disconnect", (reason) => {
       console.log("Disconnected:", reason);
-    });
+    },[cart_no]);
 
     // Clean up on component unmount
     return () => {
