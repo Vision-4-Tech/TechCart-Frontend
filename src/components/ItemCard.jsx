@@ -33,7 +33,7 @@ const formattedDate = `${currentDate.getFullYear()}-${currentDate.getMonth()+1}-
   const [show,setShow]=useState(false);
  
   const state= location.state  ;
-   const URL = "https://tech-cart-6em1.vercel.app/";
+   const URL = "https://tech-cart-one.vercel.app/";
   const [userData, setUserData] = useState({
     id:"",
     name: "",
