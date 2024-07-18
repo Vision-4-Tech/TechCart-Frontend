@@ -33,7 +33,7 @@ const formattedDate = `${currentDate.getFullYear()}-${currentDate.getMonth()+1}-
   const [show,setShow]=useState(false);
  
   const state= location.state  ;
-   const URL = "https://techcartbackend-zp4w.onrender.com/";
+   const URL = "https://techcartbackend-zp4w.onrender.com";
   const [userData, setUserData] = useState({
     id:"",
     name: "",
