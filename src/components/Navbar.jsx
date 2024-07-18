@@ -29,11 +29,12 @@ const Navbar = () => {
   
   return (
     // 
-   <Box className='item-center justify-between m-11 flex '>
+   <Box className='item-center justify-between p-11 flex '>
          
       <h2 className='font-bold text-3xl'>Tech Cart Innovators</h2>
       <h2 className='text-xl font-bold'>Welcome <b className='hover:capitalize'>{name}</b>!</h2>
       <Button variant='contained' className='' onClick={Logout}>Logout</Button>
+
    </Box>
       
   

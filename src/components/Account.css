@@ -1,0 +1,43 @@
+.account-container {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .account-title {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .user-details-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .user-details-table {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  
+  .user-details-table .label {
+    text-align: right;
+    padding-right: 16px;
+    font-weight: bold;
+  }
+  
+  .user-details-table td {
+    padding-bottom: 12px;
+  }
+  
+  .save-button, .edit-button {
+    display: block;
+    margin: 20px auto 0 auto;
+    padding: 10px 20px;
+  }
+  

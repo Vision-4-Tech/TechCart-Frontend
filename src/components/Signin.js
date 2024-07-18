@@ -26,7 +26,7 @@ const Signin = () => {
         if (result.data.type === "user") {
           localStorage.setItem('user',result.data.name);
           localStorage.setItem("userDetails",JSON.stringify(result.data));
-          navigate('/Home', { state: { name: result?.data?.name,email:result?.data?.email,password:result?.data?.password } });
+          navigate('/home/hero', { state: { name: result?.data?.name,email:result?.data?.email,password:result?.data?.password } });
         } else if (result.data.type === "admin") {
           console.log(result.data.name);
           navigate('/Admin', { state: { name: result.data.name } });

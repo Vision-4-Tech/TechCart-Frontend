@@ -1,5 +1,5 @@
 .table{
-    width: 80%;
+    width: 100%;
     border-collapse:collapse;
    
     border-spacing: 1rem;
@@ -14,6 +14,15 @@
    text-align: center;
   
 }
+.cart{
+ 
+  
+  font-weight: 34px;
+  font-size: 38px;
+  color: blue;
+ 
+  margin-bottom: 2rem;
+}
 .tbody>tr>td{
      padding-top: 3rem;
 }
@@ -23,5 +32,6 @@
   }
   
   .table th {
-    background-color: black;
+    background-color: rgb(204, 200, 200);
+    color: black;
   }

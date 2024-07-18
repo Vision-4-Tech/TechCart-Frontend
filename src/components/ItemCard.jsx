@@ -6,18 +6,21 @@ import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-
+import io from 'socket.io-client';
 import DialogTitle from '@mui/material/DialogTitle';
 
 import { useLocation } from "react-router-dom";
 import {Snackbar} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 const ItemCard = () => {
+
   const [open, setOpen] = useState(false);
   const [cartNumber, setCartNumber] = useState("");
   const [cartItems, setCartItems] = useState([]);
   const [total,setTotal]=useState(0);
   const [cartid,setCartid]=useState(0);
+  const [responseId,setResponseId]=useState('');
+  const [orderId,setOrderId]=useState('');
   const [cart,setCart]=useState(0);
   const [sessionid,setSessionId]=useState();
   const location = useLocation();
@@ -25,19 +28,21 @@ const ItemCard = () => {
   const [deleteInitiated, setDeleteInitiated] = useState(false);
   const currentDate = new Date();
 const formattedDate = `${currentDate.getFullYear()}-${currentDate.getMonth()+1}-${currentDate.getDate()}`;
-console.log(formattedDate);
+
   const [result,setResult]=useState({});
   const [show,setShow]=useState(false);
  
   const state= location.state  ;
-  
+   const URL='http://localhost:5000'
   const [userData, setUserData] = useState({
+    id:"",
     name: "",
     email: "",
     phone: "",
     password: "",
   });
   const userDetails = localStorage.getItem('userDetails');
+  console.log(userDetails)
   
   useEffect(() => {
     // Check if user details exist in localStorage
@@ -53,13 +58,33 @@ console.log(formattedDate);
         name: parsedUserDetails.name || '',
         email: parsedUserDetails.email || '',
         phone: parsedUserDetails.phone || '',
-        password: parsedUserDetails.password || ''
+        password: parsedUserDetails.password || '',
+        id:parsedUserDetails._id||"",
       });
+      console.log("id", parsedUserDetails._id);
+     
     }
   }, [navigate]);
 
   const cart_no = localStorage.getItem("cartno")?localStorage.getItem("cartno"):"";
-  console.log(cart_no)
+  useEffect(() => {
+    // Join the cart room
+       const socket = io(URL);
+    socket.emit("joinCartRoom", cart_no);
+
+    // Listen for updates to the cart
+    socket.on("cartUpdated", (updatedCart) => {
+      console.log("Cart updated:", updatedCart.items);
+      
+        setCartItems(updatedCart.items)
+     
+    });
+
+    // Clean up on component unmount
+    return () => {
+      socket.disconnect();
+    };
+  },[cart_no]);
   const calculateTotal = () => {
     let totalAmount = 0;
     for (const item of cartItems) {
@@ -78,28 +103,30 @@ console.log(formattedDate);
       return;
     }
     setShow(false);
-    window.location.reload();
+    // window.location.reload();
   };
   useEffect(() => {
     session();
     if (result.msg) {
       const sessionid2=localStorage.getItem("sessionId")
       // Ensure deleteCart is called only once
+    
       if (!deleteInitiated) {
         setDeleteInitiated(true);
         const historyData = {
+          id:userData.id,
           date: formattedDate,
-          Cartno: cart_no,
+          Cartno: cartid,
           Name: userData.name,
           Phone: userData.phone,
           Email: userData.email,
-          OrderId: result.orderId,
+          OrderId: orderId,
           Amount: "5000",
           Payment:result.msg,
           SessionId:sessionid2,
         };
   
-        fetch("https://tech-cart-one.vercel.app/histories", {
+        fetch(URL+histories, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -108,26 +135,28 @@ console.log(formattedDate);
         })
           .then((response) => response.json())
           .then((data) => {
-            console.log("History API Response:", data);
+            // console.log("History API Response:", data);
           })
           .catch((error) => {
-            console.error("Error calling /histories API:", error);
+            // console.error("Error calling /histories API:", error);
           });
+          console.log(orderId)
           const TransactionData = {
-            date: formattedDate,
+            id:userDetails._id,
+            Date: formattedDate,
             SessionId:sessionid,
             Cartno: cartid,
             Name: userData.name,
             Phone: userData.phone,
             Email: userData.email,
-            OrderId: result.orderId,
-            TransactionId:result.paymentId,
+            OrderId: orderId,
+            TransactionId:responseId,
             Products:cartItems,
             Amount: "5000"
             
           };
     
-          fetch("https://tech-cart-one.vercel.app/Transactions", {
+          fetch(URL+Transactions, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -136,10 +165,10 @@ console.log(formattedDate);
           })
             .then((response) => response.json())
             .then((data) => {
-              console.log("History API Response:", data);
+              // console.log("History API Response:", data);
             })
             .catch((error) => {
-              console.error("Error calling /transactions API:", error);
+              // console.error("Error calling /transactions API:", error);
             });
         deleteCar(cart_no);
         deleteCart();
@@ -153,7 +182,7 @@ console.log(formattedDate);
       
       }
       setCartNumber();
-      window.location.reload();
+      
       setShow(true);
      
       
@@ -163,12 +192,12 @@ console.log(formattedDate);
   const deleteCar=async(cartid)=>{
     
     // Replace '123456789' with the cartno you want to delete
-    console.log(cartid)
+    
     const cartn=parseInt(cartid)
-    console.log(cartn);
+    
     try {
       console.log("started")
-    const response = await fetch(`https://tech-cart-one.vercel.app/api/carts/${cartn}`, {
+    const response = await fetch(`${URL}/api/carts/${cartn}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -176,8 +205,7 @@ console.log(formattedDate);
     // Send cartno in the request body
     });
 
-    console.log(response); // Log success message from the server
-    console.log("Deleted") // Log deleted item details if needed
+  // Log deleted item details if needed
   } catch (error) {
     console.log(error)
     // Handle error: log error message from server response
@@ -192,20 +220,20 @@ console.log(formattedDate);
       return;
     }
     try {
-      const response = await fetch(`https://tech-cart-one.vercel.app/deleteCart/${cartno}`, {
+      const response = await fetch(`${URL}/deleteCart/${cartno}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
         },
       });
-      console.log(cartno);
+     
       if (response.ok) {
         localStorage.removeItem("sessionId");
        
         const data = await response.json();
-        console.log(data);
+      
         setCartItems([]);
-        window.location.reload();
+        // window.location.reload();
       } else {
         const errorMessage = await response.text();
         console.error(`Error deleting cart: ${errorMessage}`);
@@ -216,7 +244,7 @@ console.log(formattedDate);
   };
   useEffect(() => {
 
-    console.log(cart_no)
+   
     if (!cart_no || cart_no==0) {
       console.log("Cart number is empty. Skipping API call.");
       return;
@@ -224,7 +252,7 @@ console.log(formattedDate);
   
     const fetchData = async () => {
       try {
-        const response = await fetch("https://tech-cart-one.vercel.app/TempItems", {
+        const response = await fetch(`${URL}/TempItems`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -239,7 +267,7 @@ console.log(formattedDate);
           console.log(datas)
           const data = datas.items;
           setCartItems(data);
-          console.log("Items:", cartItems);
+          
         } else {
           setCartItems([]);
         }
@@ -252,17 +280,18 @@ console.log(formattedDate);
     fetchData();
    session();
     // Set up an interval to call fetchData every two seconds
-    const intervalId = setInterval(fetchData, 1000);
+
+    // const intervalId = setInterval(fetchData, 1000);
   
-    // Clean up the interval when the component unmounts
-    return () => clearInterval(intervalId);
+    // // Clean up the interval when the component unmounts
+    // return () => clearInterval(intervalId);
   }, [cart, cart_no]);
   
   const session=async()=>{
     if(cart_no==0){
       return
     }
-    const response = await fetch("https://tech-cart-one.vercel.app/TempItems", {
+    const response = await fetch(`${URL}/TempItems`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -305,7 +334,7 @@ console.log(formattedDate);
     // Navigate to '/Cart' with props as email
     const cart_number_id=cart_no;
     if(cart_no==cart_number_id){
-      const response = await fetch("https://tech-cart-6em1.vercel.app/CartNo", {
+      const response = await fetch(`${URL}CartNo`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -352,7 +381,7 @@ console.log(formattedDate);
   let config={
     method:"post",
     maxBodyLength:Infinity,
-    url:"https://tech-cart-one.vercel.app/order",
+    url:`${URL}order`,
     headers:{
             'Content-Type':'application/json'
     },
@@ -361,6 +390,9 @@ console.log(formattedDate);
 
   axios.request(config)
   .then((response)=>{
+    console.log(response.data.id)
+    setOrderId(response.data.id)
+    console.log(orderId)
     console.log(JSON.stringify(response.data));
      handleRazorpayScreen(response.data.amount)
   })
@@ -388,7 +420,10 @@ console.log(formattedDate);
     image:"image",
     handler:async function  (response){
       const body={...response};
-      const validateRes=await fetch("https://tech-cart-one.vercel.app/validate",{
+      console.log(response)
+      console.log(response.razorpay_payment_id);
+       setResponseId(response.razorpay_payment_id)
+      const validateRes=await fetch(`${URL}/validate`,{
        method:"POST",
        body:JSON.stringify(body),
        headers:{
@@ -416,6 +451,7 @@ console.log(formattedDate);
 //   console.log(responseId);
 }
 
+
 // const handleEnterKey = (e) => {
 //   if (e.key === 'Enter') {
 //     console.log('Cart Number entered:', cartNumber);
@@ -431,7 +467,7 @@ console.log(formattedDate);
   let config={
     method:"post",
     maxBodyLength:Infinity,
-    url:"https://tech-cart-one.vercel.app/order",
+    url:`${URL}order`,
     headers:{
             'Content-Type':'application/json'
     },
@@ -450,9 +486,12 @@ console.log(formattedDate);
   
   return (
     <div className="">
-    <input
-    type="text"
-    placeholder="Enter Cart Number"
+    <h1 className="cart">Cart</h1>
+    <TextField
+    type="text" 
+    variant="outlined"
+    autoFocus
+    label="Enter Cart Number"
     value={cart_no}
     onChange={(e)=>setCart(e.target.value)}
     onKeyDown={handleEnterKey}
@@ -495,6 +534,7 @@ console.log(formattedDate);
             <th>Product</th>
             
             <th>Price</th>
+            <th>Image</th>
             <th>Quantity</th>
             <th>Total</th>
             </tr>
@@ -502,16 +542,23 @@ console.log(formattedDate);
           <tbody className="tbody">
             {cartItems && cartItems.map((item, id) => {
               return (
-                <tr >
-                {console.log(item)}
-             
-               <td>{item.Product}</td>
-               <td>{item.Price}</td>
-               
-               <td>{item.Quantity}</td>
-               <td>{item.Price*item.Quantity}</td>
-               
-    </tr>
+                <tr>
+                  {console.log(item)}
+
+                  <td>{item.Product}</td>
+                  <td>{item.Price}</td>
+                  <td style={{ display: "flex", justifyContent: "center" }}>
+                    <img
+                      style={{ display: "flex", justifyContent: "center" }}
+                      src={item.imageFile}
+                      width={70}
+                      height={70}
+                      alt="Product Image"
+                    />
+                  </td>
+                  <td>{item.Quantity}</td>
+                  <td>{item.Price * item.Quantity}</td>
+                </tr>
               );
             })}
           </tbody>
@@ -520,7 +567,7 @@ console.log(formattedDate);
         open={show}
         autoHideDuration={4000}
         onClose={handleCloseSnackbar}
-        message={`Payment Sucessfull ${result.msg}`}
+        message={`Payment Sucessfull `}
       />
         {cartItems.length>0 && <h3 style={{display:'flex',  justifyContent:'flex-end',marginRight:'18rem'}}  className="m-5 text-lg">Total : {total}</h3>} 
         <div style={{display:'flex',justifyContent:'flex-end',marginRight:'17rem'}}>

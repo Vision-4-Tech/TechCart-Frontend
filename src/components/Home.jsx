@@ -30,10 +30,8 @@ const Home = () => {
 
   return (
     <div>
-      
-      
-      
-      <Navbar  />
+    <div style={{backgroundColor:'blue',color:'white'}}>
+      <Navbar  /></div>
       <SideBar/>
     </div>
   );

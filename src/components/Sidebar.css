@@ -1,0 +1,89 @@
+.navicons:hover{
+     /* background-color: red; */
+      
+}
+.navicons{
+    background-color: rgb(237, 234, 234);
+    padding: 1rem;
+    border-radius: 1000px;
+    height: fit-content;
+    width: 7rem;
+    color: black;
+    text-align: center;
+    font-weight: bold;
+}
+.sidebar-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    margin-top: 4rem;
+}
+
+.navicons {
+    text-decoration: none;
+    color: black;
+    padding: 0.5rem 1rem;
+    border-radius: 1000px;
+    transition: background-color 0.3s, color 0.3s;
+    font-weight: bold;
+}
+
+.navicons:hover {
+    /* background-color: #646060; */
+}
+
+/* Styles for selected navicons */
+.selected {
+    background-color: #007bff;
+    color: white;
+}
+
+.sidebar {
+    display: flex;
+    flex-direction: row;
+    margin-left: 1rem;
+    padding: 1rem;
+    gap: 2rem;
+}
+
+.divider {
+    background-color: grey;
+    width: 0.2rem;
+}
+
+.content {
+    width: 70%;
+   
+}
+
+/* Media query for larger devices */
+@media (min-width: 768px) {
+    .sidebar-container {
+        flex-direction: row;
+        gap: 4rem;
+    }
+}
+
+@media (min-width: 768px) {
+    .sidebar {
+        flex-direction: column;
+        gap: 4rem;
+        
+    }
+}
+
+/* Media query for smaller devices */
+@media (max-width: 767px) {
+    .sidebar-container {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 767px) {
+    .content {
+        margin-left: 21px;
+        margin-right: 24px;
+        width: 95%;
+        
+    }
+}
