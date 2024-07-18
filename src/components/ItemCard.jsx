@@ -66,14 +66,14 @@ const formattedDate = `${currentDate.getFullYear()}-${currentDate.getMonth()+1}-
       (reason) => {
         console.log("Disconnected:", reason);
       },
-      [cartid]
+     
     );
 
     // Clean up on component unmount
     return () => {
       socket.disconnect();
     };
-  },[]);
+  },[cartid]);
   const userDetails = localStorage.getItem('userDetails');
   console.log(userDetails)
   
