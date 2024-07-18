@@ -74,6 +74,10 @@ const formattedDate = `${currentDate.getFullYear()}-${currentDate.getMonth()+1}-
           withCredentials: true,
         });
 
+        socket.on("connect",()=>{
+          console.log("COnnected to the server",socket.id)
+        })
+
         socket.emit("joinCartRoom", cart_no);
 
  
