@@ -73,9 +73,9 @@ const formattedDate = `${currentDate.getFullYear()}-${currentDate.getMonth()+1}-
           transports: ["websocket", "polling"],
           withCredentials: true,
         });
-
+         console.log("started to connect socket")
         socket.on("connect",()=>{
-          console.log("COnnected to the server",socket.id)
+          console.log("Connected to the server",socket.id)
         })
 
         socket.emit("joinCartRoom", cart_no);
@@ -87,9 +87,7 @@ const formattedDate = `${currentDate.getFullYear()}-${currentDate.getMonth()+1}-
         });
 
        
-        socket.on("connect_error", (err) => {
-          console.error("Connection error:", err);
-        });
+       
 
         socket.on("disconnect", (reason) => {
           console.log("Disconnected:", reason);
@@ -99,7 +97,7 @@ const formattedDate = `${currentDate.getFullYear()}-${currentDate.getMonth()+1}-
     return () => {
       socket.disconnect();
     };
-  },[cart_no]);
+  },[]);
   const calculateTotal = () => {
     let totalAmount = 0;
     for (const item of cartItems) {
