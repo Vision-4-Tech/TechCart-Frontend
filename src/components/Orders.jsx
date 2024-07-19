@@ -104,7 +104,7 @@ const Orders = () => {
                 <StyledTableCell>{row.Date}</StyledTableCell>
                 <StyledTableCell align="right">{row.Amount}</StyledTableCell>
 
-                <StyledTableCell>
+                <StyledTableCell style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
                   <List
                     sx={{
                       width: "100%",
