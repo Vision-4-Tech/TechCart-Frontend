@@ -538,7 +538,7 @@ const formattedDate = `${currentDate.getFullYear()}-${currentDate.getMonth()+1}-
         <DialogTitle>Cart Information</DialogTitle>
         <DialogContent>
           <TextField
-            autoFocus={cartid>0?false:true}
+            autoFocus
             required
             margin="dense"
             id="name"
