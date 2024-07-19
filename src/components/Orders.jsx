@@ -128,7 +128,7 @@ const Orders = () => {
                               }`}
                             />
                             <ListItemText
-                              primary={`Quantity - ${
+                              primary={`Qty - ${
                                  product.Quantity
                               }`}
                             />
