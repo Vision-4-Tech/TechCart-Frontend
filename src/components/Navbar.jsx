@@ -28,17 +28,17 @@ const Navbar = () => {
   }
   
   return (
-    // 
-   <Box className='item-center justify-between p-11 flex '>
-         
-      <h2 className='font-bold text-3xl'>Tech Cart Innovators</h2>
-      <h2 className='text-xl font-bold'>Welcome <b className='hover:capitalize'>{name}</b>!</h2>
-      <Button variant='contained' className='' onClick={Logout}>Logout</Button>
+    //
+    <Box className="item-center justify-between p-11 flex ">
+      <h2 className="font-bold text-2xl d-none d-sm-block">
+        Tech Cart Innovators
+      </h2>
 
-   </Box>
-      
-  
-  )
+      <Button variant="contained" className="" onClick={Logout}>
+        Logout
+      </Button>
+    </Box>
+  );
 }
 
 export default Navbar

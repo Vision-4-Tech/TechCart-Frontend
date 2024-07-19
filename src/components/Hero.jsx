@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import './Hero.css';
-import cart_icon from '../components/assets/Assets/Images/cart1.jpeg';
-import fruits_icon from '../components/assets/Assets/Images/fruits.jpeg';
-import store_icon from '../components/assets/Assets/Images/store.jpeg';
+import React, { useState, useEffect } from "react";
+import "./Hero.css";
+import cart_icon from "../components/assets/Assets/Images/cart1.jpeg";
+import fruits_icon from "../components/assets/Assets/Images/fruits.jpeg";
+import store_icon from "../components/assets/Assets/Images/store.jpeg";
 
 const Hero = () => {
   const images = [
@@ -28,14 +28,20 @@ const Hero = () => {
 
   return (
     <div className="hero-container">
-      <div className="hero-slider">
+      <div
+        className="hero-slider"
+        style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+      >
         {images.map((image, index) => (
           <div
             key={index}
-            className={`hero-slide ${index === currentIndex ? 'active' : ''}`}
-            style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+            className={`hero-slide ${index === currentIndex ? "active" : ""}`}
           >
-            <img src={image.icon} alt={`Slide ${index + 1}`} className="imagee"  style={{ width: '70rem',height:'28rem', objectFit: 'cover' }}/>
+            <img
+              src={image.icon}
+              alt={`Slide ${index + 1}`}
+              className="imagee"
+            />
           </div>
         ))}
       </div>
@@ -43,7 +49,9 @@ const Hero = () => {
         {images.map((_, index) => (
           <div
             key={index}
-            className={`circle ${index === currentIndex ? 'active-circle' : ''}`}
+            className={`circle ${
+              index === currentIndex ? "active-circle" : ""
+            }`}
             onClick={() => handleCircleClick(index)}
           />
         ))}

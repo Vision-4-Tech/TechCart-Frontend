@@ -15,8 +15,10 @@
 .sidebar-container {
     display: flex;
     flex-direction: column;
+  
     height: 100vh;
-    margin-top: 4rem;
+    margin-top: 2rem;
+   
 }
 
 .navicons {
@@ -41,8 +43,10 @@
 .sidebar {
     display: flex;
     flex-direction: row;
-    margin-left: 1rem;
-    padding: 1rem;
+    align-items: center;
+    overflow-x:scroll;
+    /* margin-left: 1rem; */
+    padding: 2rem;
     gap: 2rem;
 }
 
@@ -52,7 +56,8 @@
 }
 
 .content {
-    width: 70%;
+    width: 80%;
+     
    
 }
 
@@ -70,6 +75,10 @@
         gap: 4rem;
         
     }
+    .sidebar-container {
+        flex-direction: row;
+        gap: 1rem;
+    }
 }
 
 /* Media query for smaller devices */
@@ -85,5 +94,8 @@
         margin-right: 24px;
         width: 95%;
         
+    }
+    .sidebar-container{
+         margin-right: 1rem;
     }
 }

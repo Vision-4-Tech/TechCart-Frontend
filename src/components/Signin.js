@@ -5,27 +5,34 @@ import './Signin.css';
 import email_icon from '../components/assets/Assets/email.png';
 import password_icon from '../components/assets/Assets/password.png';
 
+import CircularProgress from "@mui/material/CircularProgress";
+
 const Signin = () => {
   const [email, setemail] = useState('');
   const [password, setpassword] = useState('');
   const [error, setError] = useState('');
   const [name, setName] = useState('');
+  const [loading,setLoading]=useState(false)
   const navigate = useNavigate();
 
+
   const handlesubmit = (e) => {
+  
+       setLoading(true);
     e.preventDefault();
     console.log('start');
-    
+ 
     axios.post('https://techcartbackend-zp4w.onrender.com/Login', { email, password })
       .then(result => {
         console.log(result);
         console.log(result.data.name);
 
         setName(result.data.name);
-        
+      
         if (result.data.type === "user") {
           localStorage.setItem('user',result.data.name);
           localStorage.setItem("userDetails",JSON.stringify(result.data));
+            setLoading(false);
           navigate('/home/hero', { state: { name: result?.data?.name,email:result?.data?.email,password:result?.data?.password } });
         } else if (result.data.type === "admin") {
           console.log(result.data.name);
@@ -35,7 +42,21 @@ const Signin = () => {
         }
       })
       .catch(err => console.log(err));
+      setLoading(false);
   };
+ const button = () => {
+   if (loading) {
+        return <button type="button"  className="submit"  disabled>
+       <CircularProgress />
+     </button>;
+   } else {
+     return (
+       <button type="submit" className="submit">
+         Login
+       </button>
+     );
+   }
+ };
 
   return (
     <div className="container">
@@ -69,7 +90,7 @@ const Signin = () => {
               />
             </div>
             <div>
-              <div className="ml-28"><button type="submit" className="submit">Login</button></div>
+              <div className="ml-28">{button()}</div>
               <div className="forgot-password">
                 Don't have an account <span onClick={() => { navigate('/login'); }}> Click Here!</span>
                

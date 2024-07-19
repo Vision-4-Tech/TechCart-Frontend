@@ -1,4 +1,4 @@
-import { React, useEffect, useState } from "react";
+import { React, useCallback, useEffect, useState } from "react";
 import axios from 'axios'
 import "./ItemCard.css";
 import { Button } from "@mui/material";
@@ -12,6 +12,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { useLocation } from "react-router-dom";
 import {Snackbar} from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import CartItems from "./CartItems";
 const ItemCard = () => {
 
   const [open, setOpen] = useState(false);
@@ -75,7 +76,7 @@ const formattedDate = `${currentDate.getFullYear()}-${currentDate.getMonth()+1}-
     };
   },[cartid]);
   const userDetails = localStorage.getItem('userDetails');
-  console.log(userDetails)
+  
   
   useEffect(() => {
     // Check if user details exist in localStorage
@@ -286,22 +287,24 @@ const formattedDate = `${currentDate.getFullYear()}-${currentDate.getMonth()+1}-
           
         } else {
           setCartItems([]);
+          return
         }
       } catch (error) {
         console.error("Network error:", error);
+        return
       }
     };
   
-    // Call fetchData initially
+  
     fetchData();
    session();
-    // Set up an interval to call fetchData every two seconds
-
-    // const intervalId = setInterval(fetchData, 1000);
   
-    // // Clean up the interval when the component unmounts
-    // return () => clearInterval(intervalId);
-  }, [cart, cart_no]);
+  },[cartid]);
+
+
+  const items=useCallback(()=>{
+       return cartItems;
+  },[cartItems])
   
   const session=async()=>{
     if(cart_no==0){
@@ -502,97 +505,82 @@ const formattedDate = `${currentDate.getFullYear()}-${currentDate.getMonth()+1}-
   
   return (
     <div className="">
-    <h1 className="cart">Cart</h1>
-    <TextField
-    type="text" 
-    variant="outlined"
-    autoFocus
-    label="Enter Cart Number"
-    value={cart_no}
-    onChange={(e)=>setCart(e.target.value)}
-    onKeyDown={handleEnterKey}
-    onClick={handleClickOpen}
-    className=" border border-zinc-950 rounded-lg focus:border-blue-500 focus:outline-none pl-3"
-  />
-   
-  <Dialog
-  open={open}
-  onClose={handleClose}
-  PaperProps={{
-    component: 'form',
-    onSubmit: handleSubmit,
-  }}
->
-  <DialogTitle>Cart Information</DialogTitle>
-  <DialogContent>
-    <TextField
-      autoFocus
-      required
-      margin="dense"
-      id="name"
-      name="cart_no"
-      label="Enter Cart number"
-      
-      type="text"
-      fullWidth
-      variant="standard"
-    />
-  </DialogContent>
-  <DialogActions>
-    <Button onClick={handleClose}>Cancel</Button>
-    <Button type="submit">OK</Button>
-  </DialogActions>
-</Dialog>
-      <div className="details" style={{ color:'black',marginTop:'17px' }} >
-        <table className="table">
-          <thead style={{color:'white'}} className="">
-          <tr>
-          
-            <th>Product</th>
-            
-            <th>Price</th>
-            <th>Image</th>
-            <th>Quantity</th>
-            <th>Total</th>
-            </tr>
-          </thead>
-          <tbody className="tbody">
-            {cartItems && cartItems.map((item, id) => {
-              return (
-                <tr>
-                  
-
-                  <td>{item.Product}</td>
-                  <td>{item.Price}</td>
-                  <td style={{ display: "flex", justifyContent: "center" }}>
-                    <img
-                      style={{ display: "flex", justifyContent: "center" }}
-                      src={item.imageFile}
-                      width={70}
-                      height={70}
-                      alt="Product Image"
-                    />
-                  </td>
-                  <td>{item.Quantity}</td>
-                  <td>{item.Price * item.Quantity}</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-        <Snackbar
-        open={show}
-        autoHideDuration={4000}
-        onClose={handleCloseSnackbar}
-        message={`Payment Sucessfull `}
+      <h1 className="cart">Cart</h1>
+      <TextField
+        type="text"
+        variant="outlined"
+        autoFocus
+        label="Enter Cart Number"
+        value={cart_no}
+        onChange={(e) => setCart(e.target.value)}
+        onKeyDown={handleEnterKey}
+        onClick={handleClickOpen}
+        className=" border border-zinc-950 rounded-lg focus:border-blue-500 focus:outline-none pl-3"
       />
-        {cartItems.length>0 && <h3 style={{display:'flex',  justifyContent:'flex-end',marginRight:'18rem'}}  className="m-5 text-lg">Total : {total}</h3>} 
-        <div style={{display:'flex',justifyContent:'flex-end',marginRight:'17rem'}}>
-        
-        {cartItems.length>0 &&<Button variant="contained" onClick={paymentHandler}>Payment</Button>}
-       
-        </div>
-        
+
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        PaperProps={{
+          component: "form",
+          onSubmit: handleSubmit,
+        }}
+      >
+        <DialogTitle>Cart Information</DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            required
+            margin="dense"
+            id="name"
+            name="cart_no"
+            label="Enter Cart number"
+            type="text"
+            fullWidth
+            variant="standard"
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button type="submit">OK</Button>
+        </DialogActions>
+      </Dialog>
+      <div className="details" style={{ color: "black", marginTop: "17px" }}>
+        <CartItems items={items()} />
+        <Snackbar
+          open={show}
+          autoHideDuration={4000}
+          onClose={handleCloseSnackbar}
+          message={`Payment Sucessfull `}
+        />
+      </div>
+      {cartItems.length > 0 && (
+        <h3
+          style={{
+            fontWeight: "bold",
+            fontSize: "23px",
+            display: "flex",
+            justifyContent: "center",
+          }}
+          className="m-5 text-lg"
+        >
+          Total : {total}
+        </h3>
+      )}
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        {cartItems.length > 0 && (
+          <Button
+            style={{
+              fontWeight: "bold",
+              fontSize: "20px",
+            }}
+            variant="contained"
+            className="payment"
+            onClick={paymentHandler}
+          >
+            Payment
+          </Button>
+        )}
       </div>
     </div>
   );
