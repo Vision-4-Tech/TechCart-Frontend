@@ -518,7 +518,7 @@ const formattedDate = `${currentDate.getFullYear()}-${currentDate.getMonth()+1}-
       <TextField
         type="text"
         variant="outlined"
-        autoFocus
+        autoFocus={cartid>0?false:true}
         label="Enter Cart Number"
         value={cart_no}
         onChange={(e) => setCart(e.target.value)}
