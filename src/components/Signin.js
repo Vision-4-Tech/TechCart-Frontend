@@ -20,7 +20,7 @@ const Signin = () => {
   
        setLoading(true);
     e.preventDefault();
-    console.log('start');
+   
  
     axios.post('https://techcartbackend-zp4w.onrender.com/Login', { email, password })
       .then(result => {

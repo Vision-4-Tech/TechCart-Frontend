@@ -127,6 +127,11 @@ const Orders = () => {
                                 product.Price * product.Quantity
                               }`}
                             />
+                            <ListItemText
+                              primary={`Quantity - ${
+                                 product.Quantity
+                              }`}
+                            />
                           </ListItemButton>
                         ))}
                       </List>

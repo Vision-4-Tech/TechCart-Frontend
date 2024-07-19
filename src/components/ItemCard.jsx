@@ -24,6 +24,7 @@ const ItemCard = () => {
   const [orderId,setOrderId]=useState('');
   const [cart,setCart]=useState(0);
   const [sessionid,setSessionId]=useState();
+  const [price,setAmount]=useState();
   const location = useLocation();
   const navigate = useNavigate();
   const [deleteInitiated, setDeleteInitiated] = useState(false);
@@ -127,18 +128,19 @@ const formattedDate = `${currentDate.getFullYear()}-${currentDate.getMonth()+1}-
     if (result.msg) {
       const sessionid2=localStorage.getItem("sessionId")
       // Ensure deleteCart is called only once
-    
+       const cartno=localStorage.getItem('cartno')
+       console.log(cartno)
       if (!deleteInitiated) {
         setDeleteInitiated(true);
         const historyData = {
           id:userData.id,
           date: formattedDate,
-          Cartno: cartid,
+          Cartno: cartno,
           Name: userData.name,
           Phone: userData.phone,
           Email: userData.email,
           OrderId: orderId,
-          Amount: "5000",
+          Amount: price,
           Payment:result.msg,
           SessionId:sessionid2,
         };
@@ -153,23 +155,24 @@ const formattedDate = `${currentDate.getFullYear()}-${currentDate.getMonth()+1}-
           .then((response) => response.json())
           .then((data) => {
             // console.log("History API Response:", data);
+            localStorage.removeItem("sessionId");
           })
           .catch((error) => {
-            // console.error("Error calling /histories API:", error);
+            console.error("Error calling /histories API:", error);
           });
           console.log(orderId)
           const TransactionData = {
             id:userDetails._id,
             Date: formattedDate,
             SessionId:sessionid,
-            Cartno: cartid,
+            Cartno: cartno,
             Name: userData.name,
             Phone: userData.phone,
             Email: userData.email,
             OrderId: orderId,
             TransactionId:responseId,
             Products:cartItems,
-            Amount: "5000"
+            Amount: price
             
           };
     
@@ -182,27 +185,27 @@ const formattedDate = `${currentDate.getFullYear()}-${currentDate.getMonth()+1}-
           })
             .then((response) => response.json())
             .then((data) => {
-              // console.log("History API Response:", data);
+              
+              
             })
             .catch((error) => {
               // console.error("Error calling /transactions API:", error);
             });
-        deleteCar(cart_no);
+        
+        
+
         deleteCart();
-        
-        localStorage.removeItem('cartno');
-        
+        deleteCar(cart_no);
+        setCartid();
+
         setCartItems([]);
-        
-        localStorage.removeItem('sessionId')
-        
-      
+
       }
-      setCartNumber();
+     
       
       setShow(true);
      
-      
+       
     }
   }, [result.msg, deleteInitiated]);
 
@@ -233,6 +236,7 @@ const formattedDate = `${currentDate.getFullYear()}-${currentDate.getMonth()+1}-
   const deleteCart = async () => {
 
     const cartno=localStorage.getItem("cartno")
+    console.log(cartno)
     if(cartno==0){
       return;
     }
@@ -246,7 +250,8 @@ const formattedDate = `${currentDate.getFullYear()}-${currentDate.getMonth()+1}-
      
       if (response.ok) {
         localStorage.removeItem("sessionId");
-       
+           localStorage.removeItem("cartno");
+           
         const data = await response.json();
       
         setCartItems([]);
@@ -307,6 +312,7 @@ const formattedDate = `${currentDate.getFullYear()}-${currentDate.getMonth()+1}-
   },[cartItems])
   
   const session=async()=>{
+    console.log(cart_no)
     if(cart_no==0){
       return
     }
@@ -393,7 +399,7 @@ const formattedDate = `${currentDate.getFullYear()}-${currentDate.getMonth()+1}-
     };
  const paymentHandler=async (e)=>{
   let data=JSON.stringify({
-    amount:amount*100,
+    amount:amount,
     currency:'INR'
   })
 
@@ -411,8 +417,10 @@ const formattedDate = `${currentDate.getFullYear()}-${currentDate.getMonth()+1}-
   .then((response)=>{
     console.log(response.data.id)
     setOrderId(response.data.id)
-    console.log(orderId)
+  
     console.log(JSON.stringify(response.data));
+    const data=JSON.stringify(response.data.amount)
+    setAmount(data)
      handleRazorpayScreen(response.data.amount)
   })
   .catch((error)=>{
@@ -432,7 +440,7 @@ const formattedDate = `${currentDate.getFullYear()}-${currentDate.getMonth()+1}-
   
   const options={
     key:"rzp_test_L1JPeGnZbS2ffv",
-    amount:amount,
+    amount:amount*100,
     currency:'INR',
     name:"Tech Cart",
     description:"payment to tech cart",
@@ -479,7 +487,7 @@ const formattedDate = `${currentDate.getFullYear()}-${currentDate.getMonth()+1}-
  
  const handleEnterKey = (e) => {
   let data=JSON.stringify({
-    amount:amount*100,
+    amount:amount,
     currency:'INR'
   })
 
@@ -496,6 +504,7 @@ const formattedDate = `${currentDate.getFullYear()}-${currentDate.getMonth()+1}-
   axios.request(config)
   .then((response)=>{
     console.log(JSON.stringify(response.data));
+    console.log(response.data.amount)
      handleRazorpayScreen(response.data.amount)
   })
   .catch((error)=>{
