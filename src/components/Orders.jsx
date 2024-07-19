@@ -87,7 +87,7 @@ const Orders = () => {
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <StyledTableCell>Product</StyledTableCell>
+            <StyledTableCell>Date</StyledTableCell>
             <StyledTableCell align="right">Amount</StyledTableCell>
             <StyledTableCell align="right">Products</StyledTableCell>
             <StyledTableCell align="right">CartNo</StyledTableCell>
