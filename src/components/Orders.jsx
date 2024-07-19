@@ -124,7 +124,7 @@ const Orders = () => {
                           <ListItemButton key={index} sx={{ pl: 4 }}>
                             <ListItemText
                               primary={`${product.Product} - ${
-                                product.Price * product.Quantity
+                                product.Price 
                               }`}
                             />
                             <ListItemText
