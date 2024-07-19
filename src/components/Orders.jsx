@@ -1,12 +1,9 @@
-
-import axios from 'axios';
-import React, { useEffect, useState } from 'react'
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
-import ListSubheader from "@mui/material/ListSubheader";
 import List from "@mui/material/List";
 import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Collapse from "@mui/material/Collapse";
 import ExpandLess from "@mui/icons-material/ExpandLess";
@@ -33,62 +30,58 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(odd)": {
     backgroundColor: theme.palette.action.hover,
   },
-  // hide last border
   "&:last-child td, &:last-child th": {
     border: 0,
   },
 }));
 
-
 const Orders = () => {
-    const [data,setData]=useState([]);
-    const [loading, setLoading] = useState(false);
-      const [open, setOpen] = React.useState(false);
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState({});
 
-      const handleClick = () => {
-        setOpen(!open);
-      };
-    
-    useEffect(() => {
-      const data2= JSON.parse(localStorage.getItem('userDetails'));
-      const id=data2._id;
-      setLoading(true)
-      const apiUrl = "https://techcartbackend-zp4w.onrender.com/histories/orders";
+  const handleClick = (id) => {
+    setOpen((prevOpen) => ({
+      ...prevOpen,
+      [id]: !prevOpen[id],
+    }));
+  };
 
-      axios
-        .post(apiUrl, { id })
-        .then((response) => {
-          console.log("API response:", response.data);
-          setData(response.data)
-          setLoading(false)
-          
-        })
-        .catch((error) => {
-          console.error("API error:", error);
-          setLoading(false)
-        });
-      
-    
-    },[]);
+  useEffect(() => {
+    const data2 = JSON.parse(localStorage.getItem("userDetails"));
+    const id = data2._id;
+    setLoading(true);
+    const apiUrl = "https://techcartbackend-zp4w.onrender.com/histories/orders";
 
+    axios
+      .post(apiUrl, { id })
+      .then((response) => {
+        console.log("API response:", response.data);
+        setData(response.data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("API error:", error);
+        setLoading(false);
+      });
+  }, []);
 
-    if(loading){
-      return (
-        <h1
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            fontWeight: "bold",
-            height: "70vh",
-          }}
-        >
-          {" "}
-          <CircularProgress />
-        </h1>
-      );
-    }
-    
+  if (loading) {
+    return (
+      <h1
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          fontWeight: "bold",
+          height: "70vh",
+        }}
+      >
+        <CircularProgress />
+      </h1>
+    );
+  }
+
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -121,11 +114,11 @@ const Orders = () => {
                     component="nav"
                     aria-labelledby="nested-list-subheader"
                   >
-                    <ListItemButton onClick={handleClick}>
+                    <ListItemButton onClick={() => handleClick(row._id)}>
                       <ListItemText primary="Products" />
-                      {open ? <ExpandLess /> : <ExpandMore />}
+                      {open[row._id] ? <ExpandLess /> : <ExpandMore />}
                     </ListItemButton>
-                    <Collapse in={open} timeout="auto" unmountOnExit>
+                    <Collapse in={open[row._id]} timeout="auto" unmountOnExit>
                       <List component="div" disablePadding>
                         {row.Products.map((product, index) => (
                           <ListItemButton key={index} sx={{ pl: 4 }}>
@@ -139,7 +132,6 @@ const Orders = () => {
                   </List>
                 </StyledTableCell>
                 <StyledTableCell align="right">{row.Cartno}</StyledTableCell>
-
                 <StyledTableCell align="right">
                   {row.TransactionId}
                 </StyledTableCell>
@@ -149,6 +141,6 @@ const Orders = () => {
       </Table>
     </TableContainer>
   );
-}
+};
 
-export default Orders
+export default Orders;
