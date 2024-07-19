@@ -123,7 +123,9 @@ const Orders = () => {
                         {row.Products.map((product, index) => (
                           <ListItemButton key={index} sx={{ pl: 4 }}>
                             <ListItemText
-                              primary={`${product.Product} - ${product.Price}`}
+                              primary={`${product.Product} - ${
+                                product.Price * product.Quantity
+                              }`}
                             />
                           </ListItemButton>
                         ))}
