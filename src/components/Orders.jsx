@@ -109,15 +109,8 @@ const Orders = () => {
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
                 <StyledTableCell>{row.Date}</StyledTableCell>
-                <StyledTableCell
-                  style={{
-                    display: "flex",
-                    justifyContent: "flex-end",
-                  }}
-                >
-                  {row.Amount}
-                </StyledTableCell>
-                
+                <StyledTableCell align="right">{row.Amount}</StyledTableCell>
+
                 <StyledTableCell>
                   <List
                     sx={{
@@ -127,7 +120,6 @@ const Orders = () => {
                     }}
                     component="nav"
                     aria-labelledby="nested-list-subheader"
-                   
                   >
                     <ListItemButton onClick={handleClick}>
                       <ListItemText primary="Products" />
