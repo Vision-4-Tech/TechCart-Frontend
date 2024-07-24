@@ -6,7 +6,7 @@ const SideBar = ({ state }) => {
     <div className="sidebar-container">
       <div className="sidebar">
         <NavLink
-          to="/admin"
+          to="/admin/dashboard"
           className={({ isActive }) =>
             isActive ? "navicons selected" : "navicons"
           }

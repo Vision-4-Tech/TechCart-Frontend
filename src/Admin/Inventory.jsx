@@ -188,9 +188,9 @@ catch (error) {
       <Button variant="contained" onClick={handleClickOpen}>Add Item</Button>
       </div>
       
-      <div className="details" style={{ color: 'black', marginTop: '2rem' }} >
+      <div className="details" style={{  marginTop: '2rem' }} >
       <table className="table" style={{width:'100%'}}>
-      <thead style={{ color: 'white' }}>
+      <thead >
         <tr>
           <th>Image</th>
           <th>ProductId</th>

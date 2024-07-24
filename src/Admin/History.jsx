@@ -140,7 +140,7 @@ const History = () => {
                     type="date"
                     value={filteredDate}
                     onChange={handleDateChange}
-                    style={{ color: 'black' }}
+                   
                   />
                 )}
               </th>
@@ -151,7 +151,7 @@ const History = () => {
                     type="text"
                     value={inputValues.cartNo}
                     onChange={(e) => handleInputChange('cartNo', e.target.value)}
-                    style={{ color: 'black' }}
+                   
                   />
                 )}
               </th>
@@ -162,7 +162,7 @@ const History = () => {
                     type="text"
                     value={inputValues.name}
                     onChange={(e) => handleInputChange('name', e.target.value)}
-                    style={{ color: 'black' }}
+                 
                   />
                 )}
               </th>
@@ -175,7 +175,7 @@ const History = () => {
                     type="text"
                     value={inputValues.orderId}
                     onChange={(e) => handleInputChange('orderId', e.target.value)}
-                    style={{ color: 'black' }}
+                   
                   />
                 )}
               </th>

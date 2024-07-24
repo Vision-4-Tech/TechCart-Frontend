@@ -8,6 +8,15 @@ import { useState } from 'react'
 
 
 const Admin = () => {
+
+
+  const user=localStorage.getItem("userDetails")
+  if(user){
+    const data=JSON.parse(user)
+    console.log(data)
+    const type=data.type;
+    console.log(type);
+  }
   const [selectedCategory,setSelectedCategory]=useState("Dashboard");
   
   return (

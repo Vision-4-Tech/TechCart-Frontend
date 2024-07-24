@@ -79,30 +79,7 @@ const Content = ({selectedCategory}) => {
        
     </div>
   
-    <div className="mt-14 ">
-    <div className="block " ><h2 className="text-xl font-bold">Orders</h2></div>
-
-    <table className="table mt-12">
-        <thead style={{color:'white'}}>
-          <tr>
-            <th>Product</th>
-            <th>Quantity</th>
-            <th>Price</th>
-            <th>Total</th>
-          </tr>
-        </thead>
-        <tbody className="tbody">
-          {allItems.map(item => (
-            <tr key={item._id}>
-              <td>{item.name}</td>
-              <td>{item.quantity}</td>
-              <td>{item.price}</td>
-              <td>{parseInt(item.quantity)*parseInt(item.price)}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      </div>
+   
     </div>
   )
 }

@@ -26,7 +26,7 @@ const Customer= () => {
   return (
     <div style={{marginTop:'3rem',marginLeft:"25px"}}>
       <h1 style={{fontWeight:'bold',fontSize:'23px'}}>Customer</h1>
-      <div className="details" style={{ color:'black',marginTop:'2rem'}} >
+      <div className="details" style={{ marginTop:'2rem'}} >
       <table className="table">
         <thead style={{color:'white'}} className="">
         <tr>

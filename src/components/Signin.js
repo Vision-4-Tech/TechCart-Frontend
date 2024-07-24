@@ -58,7 +58,14 @@ const Signin = () => {
           });
         } else if (result.data.user.type === "admin") {
           console.log(result.data.user.name);
-          navigate("/Admin", { state: { name: result.data.user.name } });
+          navigate("/admin/dashboard", { state: { name: result.data.user.name } });
+           localStorage.setItem(
+             "userDetails",
+             JSON.stringify(result.data.user)
+           );
+           
+
+
         } else {
           setError(result.data);
         }
