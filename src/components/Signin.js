@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import './Signin.css';
@@ -14,7 +14,22 @@ const Signin = () => {
   const [name, setName] = useState('');
   const [loading,setLoading]=useState(false)
   const navigate = useNavigate();
+  
 
+  useEffect(()=>{
+    if(localStorage.getItem("userDetails")){
+        const {name,type}=JSON.parse(localStorage.getItem("userDetails"));
+        if(!name){
+            return
+        }
+        else{
+          if(type=="user") {navigate("/home/hero")}
+          else{
+            navigate("/Admin")
+          }
+        }
+      }
+  },[])
 
   const handlesubmit = (e) => {
   

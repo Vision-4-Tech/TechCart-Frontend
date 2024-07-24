@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import user_icon from '../components/assets/Assets/person.png'
@@ -86,6 +86,20 @@ const  Signup=()=>{
     },
   }));
   
+    useEffect(() => {
+      if (localStorage.getItem("userDetails")) {
+        const { name, type } = JSON.parse(localStorage.getItem("userDetails"));
+        if (!name) {
+          return;
+        } else {
+          if (type == "user") {
+            navigate("/home/hero");
+          } else {
+            navigate("/Admin");
+          }
+        }
+      }
+    }, []);
 
  
   const handlesubmit=(e)=>{
