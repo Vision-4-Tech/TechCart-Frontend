@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+
 import { NavLink, Outlet, useParams } from 'react-router-dom';
 import './Sidebar.css';
 
 const SideBar = ({ state }) => {
-    const params = useParams();
+  
 
     return (
       <div className="sidebar-container">

@@ -11,6 +11,9 @@ import Hero from './components/Hero';
 import ItemCard from './components/ItemCard';
 import Account from './components/Account';
 import Orders from './components/Orders';
+import { Inventory } from '@mui/icons-material';
+import Customer from './Admin/Customer';
+import History from './Admin/History';
 function App() {
   return (
     <div className="App">
@@ -25,8 +28,12 @@ function App() {
             <Route path="orders" element={<Orders />} />
           </Route>
 
-          <Route path="/Admin" element={<Admin />}></Route>
-          <Route path="/Admin/:text" element={<Admin />}></Route>
+          <Route path="/admin" element={<Admin />}>
+            <Route path="inventory" element={<Inventory />} />
+            <Route path="customers" element={<Customer />} />
+            <Route  path="history" element={<History/>}/>
+          </Route>
+
           <Route path="/details/:id" element={<Details />}></Route>
         </Routes>
       </Router>
