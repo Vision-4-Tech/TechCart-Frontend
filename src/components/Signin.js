@@ -28,22 +28,22 @@ const Signin = () => {
         console.log(result);
         console.log(result.data.name);
 
-        setName(result.data.name);
+        setName(result.data.user.name);
 
-        if (result.data.type === "user") {
+        if (result.data.user.type === "user") {
           localStorage.setItem("user", result.data.name);
-          localStorage.setItem("userDetails", JSON.stringify(result.data));
+          localStorage.setItem("userDetails", JSON.stringify(result.data.user));
           setLoading(false);
           navigate("/home/hero", {
             state: {
-              name: result?.data?.name,
-              email: result?.data?.email,
-              password: result?.data?.password,
+              name: result?.data?.user?.name,
+              email: result?.data?.user?.email,
+              password: result?.data?.user?.password,
             },
           });
-        } else if (result.data.type === "admin") {
-          console.log(result.data.name);
-          navigate("/Admin", { state: { name: result.data.name } });
+        } else if (result.data.user.type === "admin") {
+          console.log(result.data.user.name);
+          navigate("/Admin", { state: { name: result.data.user.name } });
         } else {
           setError(result.data);
         }
