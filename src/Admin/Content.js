@@ -12,7 +12,7 @@ const Content = ({selectedCategory}) => {
         const fetchData = async () => {
           try {
             const response = await axios.get(
-              "https://techcartbackend-zp4w.onrender.com/users"
+              "https://tech-cart-6em1.vercel.app/users"
             );
             console.log('Items retrieved successfully:', response.data.totalUsers);
             setData(response.data.totalUsers);
@@ -24,7 +24,7 @@ const Content = ({selectedCategory}) => {
         const fetchItems=async()=>{
             try {
                 const response = await axios.get(
-                  "https://techcartbackend-zp4w.onrender.com/getItems"
+                  "https://tech-cart-6em1.vercel.app/getItems"
                 );
                 console.log(response.data)
                 setItems(response.data);

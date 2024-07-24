@@ -11,7 +11,7 @@ const Details = () => {
       try {
         // Fetch data from the Transaction API using orderId in the request body
         const response = await fetch(
-          "https://techcartbackend-zp4w.onrender.com/OrderId",
+          "https://tech-cart-6em1.vercel.app/OrderId",
           {
             method: "POST",
             headers: {

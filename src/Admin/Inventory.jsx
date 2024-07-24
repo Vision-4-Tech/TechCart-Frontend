@@ -89,7 +89,7 @@ const Inventory = () => {
     try {
       
       const response = await fetch(
-        "https://techcartbackend-zp4w.onrender.com/products",
+        "https://tech-cart-6em1.vercel.app/products",
         {
           method: "POST",
           headers: {

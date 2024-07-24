@@ -33,7 +33,7 @@ const History = () => {
     const filterHistory = async () => {
       try {
         const response = await axios.post(
-          " https://techcartbackend-zp4w.onrender.com/filterHistory",
+          " https://tech-cart-6em1.vercel.app/filterHistory",
           inputValues
         );
         console.log(response.data)

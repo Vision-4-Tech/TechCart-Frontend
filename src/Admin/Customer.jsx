@@ -5,7 +5,7 @@ const Customer= () => {
   const [Customer, setCustomer] = useState([]);
 
   useEffect(() => {
-    const apiUrl = "https://techcartbackend-zp4w.onrender.com/Customer";
+    const apiUrl = "https://tech-cart-6em1.vercel.app/Customer";
 
     // Fetch data from the API directly inside the useEffect
     (async () => {
