@@ -47,23 +47,47 @@ const Orders = () => {
     }));
   };
 
-  useEffect(() => {
-    const data2 = JSON.parse(localStorage.getItem("userDetails"));
-    const id = data2._id;
-    setLoading(true);
-    const apiUrl = "https://tech-cart-6em1.vercel.app/histories/orders";
+  const fetchData=()=>{
+     const data2 = JSON.parse(localStorage.getItem("userDetails"));
+     const id = data2._id;
+           setLoading(true);
+           const apiUrl = "https://tech-cart-6em1.vercel.app/histories/orders";
 
-    axios
-      .post(apiUrl, { id })
-      .then((response) => {
-        console.log("API response:", response.data);
-        setData(response.data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("API error:", error);
-        setLoading(false);
-      });
+           axios
+             .post(apiUrl, { id })
+             .then((response) => {
+               
+               setData(response.data);
+               localStorage.setItem('orders',JSON.stringify(response.data))
+               setLoading(false);
+             })
+             .catch((error) => {
+               console.error("API error:", error);
+               setLoading(false);
+             });
+  }
+
+  useEffect(() => {
+   
+
+    const cachedData=localStorage.getItem('orders');
+    if(cachedData){
+      setData(JSON.parse(cachedData))
+      
+    }
+    else{
+      fetchData();
+    }
+
+    const timeoutId = setTimeout(() => {
+      fetchData();
+    }, 2000);
+
+    // Clear timeout if the component unmounts
+    return () => clearTimeout(timeoutId);
+
+
+   
   }, []);
 
   if (loading) {

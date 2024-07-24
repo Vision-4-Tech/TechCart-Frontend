@@ -23,6 +23,7 @@ const Navbar = () => {
   const Logout=()=>{
     localStorage.removeItem("user");
     localStorage.removeItem("userDetails");
+    localStorage.removeItem("orders")
     navigate("/login");
     
   }
