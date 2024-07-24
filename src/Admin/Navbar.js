@@ -1,13 +1,29 @@
 import React from 'react'
-
+import { useNavigate } from "react-router-dom";
+import { Button } from "@mui/material";
+import './style.css'
 const Navbar = () => {
+  const navigate = useNavigate();
+ const Logout = () => {
+   
+   localStorage.removeItem("userDetails");
+  
+   navigate("/login");
+ };
+
   return (
-    <div className='flex  justify-center h-[5rem] items-center border-b-2 font-bold text-2xl'>
-    
-     <h1 className="">Dashboard</h1>
-    
+    <div className="headers">
+      <div className='h1'>
+        Dashboard
+      </div>
+
+      <div className='btn'>
+        <Button variant="contained" className="logout" onClick={Logout}>
+          Logout
+        </Button>
+      </div>
     </div>
-  )
+  );
 }
 
 export default Navbar
