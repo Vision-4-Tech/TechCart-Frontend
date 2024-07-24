@@ -35,7 +35,7 @@ const formattedDate = `${currentDate.getFullYear()}-${currentDate.getMonth()+1}-
   const [show,setShow]=useState(false);
  
   const state= location.state  ;
-   const URL = "https://techcartbackend-zp4w.onrender.com";
+   const URL = "https://tech-cart-6em1.vercel.app/";
   const [userData, setUserData] = useState({
     id:"",
     name: "",
@@ -44,9 +44,10 @@ const formattedDate = `${currentDate.getFullYear()}-${currentDate.getMonth()+1}-
     password: "",
   });
 
-  const url = "https://socket-limk.onrender.com";
+   const url = "https://socket-limk.onrender.com";
+
   useEffect(() => {
-    // Join the cart room
+  
    const socket = io(url, {
      transports: ["websocket", "polling"], // Allow both transports
      withCredentials: true,
@@ -110,6 +111,8 @@ const formattedDate = `${currentDate.getFullYear()}-${currentDate.getMonth()+1}-
     }
     return totalAmount;
   };
+
+  
   useEffect(()=>{
     const newTotal = calculateTotal();
     setTotal(newTotal);

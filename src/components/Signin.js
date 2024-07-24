@@ -22,26 +22,33 @@ const Signin = () => {
     e.preventDefault();
    
  
-    axios.post('https://techcartbackend-zp4w.onrender.com/Login', { email, password })
-      .then(result => {
+    axios
+      .post("https://tech-cart-6em1.vercel.app/Login", { email, password })
+      .then((result) => {
         console.log(result);
         console.log(result.data.name);
 
         setName(result.data.name);
-      
+
         if (result.data.type === "user") {
-          localStorage.setItem('user',result.data.name);
-          localStorage.setItem("userDetails",JSON.stringify(result.data));
-            setLoading(false);
-          navigate('/home/hero', { state: { name: result?.data?.name,email:result?.data?.email,password:result?.data?.password } });
+          localStorage.setItem("user", result.data.name);
+          localStorage.setItem("userDetails", JSON.stringify(result.data));
+          setLoading(false);
+          navigate("/home/hero", {
+            state: {
+              name: result?.data?.name,
+              email: result?.data?.email,
+              password: result?.data?.password,
+            },
+          });
         } else if (result.data.type === "admin") {
           console.log(result.data.name);
-          navigate('/Admin', { state: { name: result.data.name } });
+          navigate("/Admin", { state: { name: result.data.name } });
         } else {
           setError(result.data);
         }
       })
-      .catch(err => console.log(err));
+      .catch((err) => console.log(err));
       setLoading(false);
   };
  const button = () => {

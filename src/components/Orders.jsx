@@ -51,7 +51,7 @@ const Orders = () => {
     const data2 = JSON.parse(localStorage.getItem("userDetails"));
     const id = data2._id;
     setLoading(true);
-    const apiUrl = "https://techcartbackend-zp4w.onrender.com/histories/orders";
+    const apiUrl = "https://tech-cart-6em1.vercel.app/histories/orders";
 
     axios
       .post(apiUrl, { id })

@@ -94,18 +94,29 @@ const  Signup=()=>{
       e.preventDefault();
       console.log('start');
 
-      axios.post(' https://techcartbackend-zp4w.onrender.com/Register',{name,email,password,secretkey,type})
-      .then(result=>{
-
-        if(result.data.message==="Invalid secret key" || result.data.message==="Record already exists for this email" ){
-          console.log(result.data.message)
-             setError(result.data.message)
-         }
-         else{
-          navigate('/');
-         }
-        {console.log(result)} })
-      .catch(err=>console.log(err))
+      axios
+        .post("https://tech-cart-6em1.vercel.app/Register", {
+          name,
+          email,
+          password,
+          secretkey,
+          type,
+        })
+        .then((result) => {
+          if (
+            result.data.message === "Invalid secret key" ||
+            result.data.message === "Record already exists for this email"
+          ) {
+            console.log(result.data.message);
+            setError(result.data.message);
+          } else {
+            navigate("/");
+          }
+          {
+            console.log(result);
+          }
+        })
+        .catch((err) => console.log(err));
   }
   return(
     <div className="container">
