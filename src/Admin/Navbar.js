@@ -52,7 +52,7 @@ const Navbar = () => {
     <div className="headers">
       <div className="h1">Dashboard</div>
 
-      <div className="btn"></div>
+      
 
       <Box sx={{ flexGrow: 0 }}>
         <Tooltip title="Open settings">

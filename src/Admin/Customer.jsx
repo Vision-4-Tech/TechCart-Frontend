@@ -40,12 +40,16 @@ const Customer= () => {
           { Customer && Customer.map((item, id) => {
             return (
               <tr key={id}>
-              {console.log(item)}
-             <td>{item.name}</td>
-             <td>{item.email}</td>
-           
-             
-  </tr>
+                {console.log(item)}
+                <td>
+                  {item.name}
+                  {item.type == "admin" ? " (admin)":" (user)"}
+                </td>
+                <td>
+                  {item.email}
+                
+                </td>
+              </tr>
             );
           })}
         </tbody>
