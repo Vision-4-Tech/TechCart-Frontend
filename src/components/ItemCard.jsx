@@ -8,7 +8,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import io from 'socket.io-client';
 import DialogTitle from '@mui/material/DialogTitle';
-
+import SnackbarComponent from "./Snackbar";
 import { useLocation } from "react-router-dom";
 import {Snackbar} from "@mui/material";
 import { useNavigate } from "react-router-dom";
@@ -28,7 +28,9 @@ const ItemCard = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [deleteInitiated, setDeleteInitiated] = useState(false);
-  
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("error");
 const currentDate = new Date();
 const year = currentDate.getFullYear();
 const month = String(currentDate.getMonth() + 1).padStart(2, '0');
@@ -124,12 +126,8 @@ console.log(formattedDate);
         
   })
 
-  const handleCloseSnackbar = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setShow(false);
-    // window.location.reload();
+  const handleCloseSnackbar = () => {
+    setSnackbarOpen(false);
   };
   useEffect(() => {
     session();
@@ -263,7 +261,7 @@ console.log(formattedDate);
         const data = await response.json();
       
         setCartItems([]);
-        // window.location.reload();
+        window.location.reload();
       } else {
         const errorMessage = await response.text();
         console.error(`Error deleting cart: ${errorMessage}`);
@@ -467,7 +465,9 @@ console.log(formattedDate);
       });
       const jsonRes=await validateRes.json();
       setResult(jsonRes)
-
+        setSnackbarMessage("Payment Successfull");
+        setSnackbarSeverity("success");
+        setSnackbarOpen(true);
       console.log(jsonRes);
    },
     prefil:{
@@ -526,7 +526,7 @@ console.log(formattedDate);
       <TextField
         type="text"
         variant="outlined"
-        autoFocus={cartid>0?false:true}
+        autoFocus={cartid > 0 ? false : true}
         label="Enter Cart Number"
         value={cart_no}
         onChange={(e) => setCart(e.target.value)}
@@ -564,11 +564,11 @@ console.log(formattedDate);
       </Dialog>
       <div className="details" style={{ color: "black", marginTop: "17px" }}>
         <CartItems items={items()} />
-        <Snackbar
-          open={show}
-          autoHideDuration={4000}
+        <SnackbarComponent
+          message={snackbarMessage}
+          open={snackbarOpen}
           onClose={handleCloseSnackbar}
-          message={`Payment Sucessfull `}
+          severity={snackbarSeverity}
         />
       </div>
       {cartItems.length > 0 && (
