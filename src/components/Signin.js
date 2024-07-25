@@ -58,13 +58,13 @@ const Signin = () => {
          
             setTimeout(() => {
               navigate("/home/hero"); // Navigate to home page after 3 seconds
-            }, 3000);
+            }, 1000);
          
         } else if (result.data.user.type === "admin") {
           console.log(result.data.user.name);
          setTimeout(() => {
            navigate("/admin/dashboard"); // Navigate to home page after 3 seconds
-         }, 3000);
+         }, 1000);
           
            localStorage.setItem(
              "userDetails",
