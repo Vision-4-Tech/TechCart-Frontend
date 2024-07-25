@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from "react-router-dom";
-import { Button } from "@mui/material";
+import { Button, Divider } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -78,7 +78,6 @@ const Navbar = () => {
         >
           {
             <MenuItem onClick={handleCloseUserMenu} className="menu">
-             
               <Box>
                 <Typography>
                   <Button
@@ -88,8 +87,11 @@ const Navbar = () => {
                   >
                     Logout
                   </Button>
+                  <Divider />
                 </Typography>
-                <Typography>Admin : {name}</Typography>
+                <Typography style={{ marginTop: "12px" }}>
+                  Admin : {name}
+                </Typography>
               </Box>
             </MenuItem>
           }
