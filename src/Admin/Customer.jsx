@@ -33,17 +33,17 @@ const Customer= () => {
           <th>Customer Name</th>
           
           <th>Gmail</th>
-          <th>Password</th>
+       
           </tr>
         </thead>
         <tbody className="tbody">
           { Customer && Customer.map((item, id) => {
             return (
-              <tr >
+              <tr key={id}>
               {console.log(item)}
              <td>{item.name}</td>
              <td>{item.email}</td>
-             <td>{item.password}</td>
+           
              
   </tr>
             );
