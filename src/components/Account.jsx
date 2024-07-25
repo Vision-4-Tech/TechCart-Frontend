@@ -80,21 +80,7 @@ const Account = () => {
                 />
               </td>
             </tr>
-            <tr>
-              <td className="label">Password</td>
-              <td>
-                <TextField
-                  disabled={!editMode}
-                  id="password"
-                  name="password"
-                  type="password"
-                  value={userData.password}
-                  variant="standard"
-                  fullWidth
-                  onChange={handleInputChange}
-                />
-              </td>
-            </tr>
+           
           </tbody>
         </table>
         </section>
