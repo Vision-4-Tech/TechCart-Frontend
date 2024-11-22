@@ -67,7 +67,9 @@ const Orders = () => {
              });
   }
 
-  
+  useEffect(()=>{
+      fetchData()
+  },[])
 
 
   if (loading) {
