@@ -137,11 +137,11 @@ const  Signup=()=>{
                setSnackbarOpen(true);
             } 
           else {
-            setSnackbarMessage(success);
-            setSnackbarSeverity("success");
-            setSnackbarOpen(true);
+           setSnackbarMessage("Logged in successfully");
+           setSnackbarSeverity("success");
+           setSnackbarOpen(true);
            
-                 navigate("/");
+            navigate("/");
           
             
           }
@@ -175,8 +175,7 @@ const  Signup=()=>{
             />
           </div>
         </div>
-        {console.log(error)}
-        
+       
           <SnackbarComponent
             message={snackbarMessage}
             open={snackbarOpen}
