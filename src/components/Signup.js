@@ -110,7 +110,7 @@ const  Signup=()=>{
       setSnackbarOpen(false);
     };
 
- 
+  const success = "Sucessfully Registered"
   const handlesubmit=(e)=>{
     
     
@@ -130,23 +130,20 @@ const  Signup=()=>{
             
             result.data.message === "Invalid secret key" ||
             result.data.message === "Record already exists for this email"
-          ) {
-            setSnackbarMessage(result.data.message);
-             setSnackbarSeverity("error");
-            setSnackbarOpen(true);
-            
-          } else {
-            setSnackbarMessage("Successfully Registered");
+          ) 
+            {
+               setSnackbarMessage(result.data.message);
+               setSnackbarSeverity("error");
+               setSnackbarOpen(true);
+            } 
+          else {
+            setSnackbarMessage(success);
             setSnackbarSeverity("success");
             setSnackbarOpen(true);
-            setTimeout(()=>{
+           
                  navigate("/");
-            },3000)
+          
             
-          }
-          {
-            
-            console.log(result);
           }
         })
         .catch((err) => console.log(err));
