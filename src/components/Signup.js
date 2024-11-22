@@ -136,12 +136,12 @@ const  Signup=()=>{
             setSnackbarOpen(true);
             
           } else {
-            setSnackbarMessage(result.data.message,"Registered");
-
+            setSnackbarMessage("Successfully Registered");
+            setSnackbarSeverity("success");
             setSnackbarOpen(true);
             setTimeout(()=>{
                  navigate("/");
-            },6000)
+            },3000)
             
           }
           {
