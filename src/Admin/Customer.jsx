@@ -15,12 +15,13 @@ const Customer= () => {
         setLoading(true)
         const response = await axios.post(apiUrl);
         console.log(response.data)
+        setLoading(false);
         setCustomer(response.data);
         if (!response.ok) {
           throw new Error(`Error fetching data from ${apiUrl}: ${response.statusText}`);
         }
         const data = await response.json();
-        setLoading(false)
+        
         
       } catch (error) {
         console.error('Error fetching customer data:', error);
@@ -44,7 +45,7 @@ const Customer= () => {
     );
      
   }
-  
+
   return (
     <div style={{marginTop:'3rem',marginLeft:"25px"}}>
       <h1 style={{fontWeight:'bold',fontSize:'23px'}}>Customer</h1>
