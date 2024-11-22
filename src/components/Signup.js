@@ -7,7 +7,7 @@ import password_icon from '../components/assets/Assets/password.png'
 import './Signup.css'
 
 import Switch from '@mui/material/Switch';
-
+import SnackbarComponent from "./Snackbar";
 import { styled } from '@mui/material/styles';
 
 
@@ -24,6 +24,11 @@ const  Signup=()=>{
   const [ error,setError]=useState("");
   const [isAdminChecked, setIsAdminChecked] = useState(false);
   const [type,setType]=useState("admin")
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("error");
+
+
   const handleAdminSwitchChange = () => {
     setIsAdminChecked(!isAdminChecked);
     if(isAdminChecked===false){
@@ -118,15 +123,20 @@ const  Signup=()=>{
         })
         .then((result) => {
           if (
+            
             result.data.message === "Invalid secret key" ||
             result.data.message === "Record already exists for this email"
           ) {
+            setSnackbarMessage("Record already exists for this mail");
+            setSnackbarSeverity("danger");
+            setSnackbarOpen(true);
             console.log(result.data.message);
             setError(result.data.message);
           } else {
             navigate("/");
           }
           {
+            
             console.log(result);
           }
         })
