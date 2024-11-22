@@ -40,7 +40,7 @@ const History = () => {
           inputValues
         );
         console.log(response.data)
-        setLoading(fasle)
+        setLoading(false)
         setFilteredData(response.data);
       } catch (error) {
         console.error('Error filtering history:', error);
@@ -53,9 +53,11 @@ const History = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setLoading(true)
         const response = await axios.get('http://localhost:5000/history');
         console.log('Items retrieved successfully:', response.data);
         setData(response.data);
+        setLoading(true)
         setFilteredData(response.data);
         
       } catch (error) {
