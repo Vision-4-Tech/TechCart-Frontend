@@ -141,7 +141,10 @@ const  Signup=()=>{
            setSnackbarSeverity("success");
            setSnackbarOpen(true);
            
-            navigate("/");
+           setTimeout(()=>{
+                navigate("/");
+           },2000)
+           
           
             
           }
