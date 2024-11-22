@@ -67,28 +67,8 @@ const Orders = () => {
              });
   }
 
-  useEffect(() => {
-   
+  
 
-    const cachedData=localStorage.getItem('orders');
-    if(cachedData){
-      setData(JSON.parse(cachedData))
-      
-    }
-    else{
-      fetchData();
-    }
-
-    const timeoutId = setTimeout(() => {
-      fetchData();
-    }, 2000);
-
-    // Clear timeout if the component unmounts
-    return () => clearTimeout(timeoutId);
-
-
-   
-  }, []);
 
   if (loading) {
     return (
