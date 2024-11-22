@@ -4,6 +4,7 @@ import { IoFilter } from 'react-icons/io5';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Link } from 'react-router-dom';
+import CircularProgress from "@mui/material/CircularProgress";
 
 
 // ... (import statements)
@@ -11,6 +12,7 @@ import { Link } from 'react-router-dom';
 // ... (import statements)
 
 const History = () => {
+  const [loading,setLoading]=useState(false);
   const [data, setData] = useState([]);
   const [filteredDate, setFilteredDate] = useState('');
   const [filteredData, setFilteredData] = useState([]);
@@ -32,11 +34,13 @@ const History = () => {
   useEffect(() => {
     const filterHistory = async () => {
       try {
+        setLoading(true)
         const response = await axios.post(
           " https://tech-cart-6em1.vercel.app/filterHistory",
           inputValues
         );
         console.log(response.data)
+        setLoading(fasle)
         setFilteredData(response.data);
       } catch (error) {
         console.error('Error filtering history:', error);
@@ -120,7 +124,21 @@ const History = () => {
     if (currentInput !== 'phone') setShowPhoneInput(false);
     if (currentInput !== 'orderId') setShowOrderIdInput(false);
   };
-
+  if(loading){
+     return (
+      <h1
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          fontWeight: "bold",
+          height: "70vh",
+        }}
+      >
+        <CircularProgress />
+      </h1>
+    );
+  }  
  
 
   return (

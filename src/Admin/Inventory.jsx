@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
+  import CircularProgress from "@mui/material/CircularProgress";
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -16,15 +16,16 @@ const Inventory = () => {
   const [productName,setProductName]=useState("");
   const [price,setPrice]=useState(0);
   const [imageFile,setImageFile]=useState("");
- 
+  const [loading,setLoading]=useState(false)
   useEffect(() => {
     
 
     const fetchData = async () => {
       try {
-       
+        setLoading(true)
         const response = await axios.get('https://tech-cart-one.vercel.app/Inventoryitem');
         console.log('API Response:', response.data);
+        setLoading(false)
         setInventoryItems(response.data);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -122,6 +123,21 @@ catch (error) {
     }
   };
 
+  if (loading) {
+    return (
+      <h1
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          fontWeight: "bold",
+          height: "70vh",
+        }}
+      >
+        <CircularProgress />
+      </h1>
+    );
+  }  
 
   return (
     <div style={{ marginTop: '3rem', marginLeft: '25px' }}>
