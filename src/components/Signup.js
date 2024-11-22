@@ -136,12 +136,12 @@ const  Signup=()=>{
             setSnackbarOpen(true);
             
           } else {
-            setSnackbarMessage("Email Registered");
+            setSnackbarMessage(result.data.message,"Registered");
 
             setSnackbarOpen(true);
             setTimeout(()=>{
                  navigate("/");
-            },2000)
+            },6000)
             
           }
           {
