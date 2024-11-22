@@ -139,7 +139,10 @@ const  Signup=()=>{
             setSnackbarMessage("Email Registered");
 
             setSnackbarOpen(true);
-            navigate("/");
+            setTimeout(()=>{
+                 navigate("/");
+            },2000)
+            
           }
           {
             
