@@ -106,6 +106,10 @@ const  Signup=()=>{
       }
     }, []);
 
+    const handleCloseSnackbar = () => {
+      setSnackbarOpen(false);
+    };
+
  
   const handlesubmit=(e)=>{
     
@@ -127,12 +131,14 @@ const  Signup=()=>{
             result.data.message === "Invalid secret key" ||
             result.data.message === "Record already exists for this email"
           ) {
-            setSnackbarMessage("Record already exists for this mail");
-            setSnackbarSeverity("danger");
+            setSnackbarMessage(result.data.message);
+             setSnackbarSeverity("error");
             setSnackbarOpen(true);
-            console.log(result.data.message);
-            setError(result.data.message);
+            
           } else {
+            setSnackbarMessage("Email Registered");
+
+            setSnackbarOpen(true);
             navigate("/");
           }
           {
@@ -142,94 +148,112 @@ const  Signup=()=>{
         })
         .catch((err) => console.log(err));
   }
-  return(
+  return (
     <div className="container">
-      
-    <div className="header">
-      <div className="text">Sign Up</div>
-      
-      <div className="underline"></div>
-      <div className="flex flex-row">
-      
-     
+      <div className="header">
+        <div className="text">Sign Up</div>
 
-      {/* First iOS-style switch labeled as "Admin" */}
-      <div direction="row" spacing={1}  className="flex">
-        <h1>Admin</h1>
-        <IOSSwitch sx={{ m: 1 }} checked={!isAdminChecked} onChange={handleAdminSwitchChange} />
-      </div>
+        <div className="underline"></div>
+        <div className="flex flex-row">
+          {/* First iOS-style switch labeled as "Admin" */}
+          <div direction="row" spacing={1} className="flex">
+            <h1>Admin</h1>
+            <IOSSwitch
+              sx={{ m: 1 }}
+              checked={!isAdminChecked}
+              onChange={handleAdminSwitchChange}
+            />
+          </div>
 
-      {/* Second iOS-style switch labeled as "User" */}
-      <div direction="row" spacing={1}  className="flex">
-        <h1>User</h1>
-        <IOSSwitch sx={{ m: 1 }} checked={isAdminChecked} onChange={handleAdminSwitchChange} />
-      </div>
-
-      
-    </div>
-    {console.log(error)}
-      {error && <h2>{error}</h2>}{correct && <h2>Secret Key is Invalid</h2>}
-      <form  onSubmit={handlesubmit}>
-         <div className="inputs">
-
-
-         {!isAdminChecked && 
-          <div className="input">
-          <img src={password_icon} alt=""/>
-              <input  
-                type="password"
-                placeholder="Enter the secret key"
-                autoComplete="off"
-                name="password"
-                onChange={(e)=>setSecretKey(e.target.value)}
-                required
-                 
-              />
-          </div>}
-      
-      <div className="input">
-            <img src={user_icon}></img>
-             <input  
-               type="text"
-               placeholder="Enter Name"
-               autoComplete="off"
-               name="email"
-                  onChange={(e)=>setName(e.target.value)}
+          {/* Second iOS-style switch labeled as "User" */}
+          <div direction="row" spacing={1} className="flex">
+            <h1>User</h1>
+            <IOSSwitch
+              sx={{ m: 1 }}
+              checked={isAdminChecked}
+              onChange={handleAdminSwitchChange}
+            />
+          </div>
+        </div>
+        {console.log(error)}
+        
+          <SnackbarComponent
+            message={snackbarMessage}
+            open={snackbarOpen}
+            onClose={handleCloseSnackbar}
+            severity={snackbarSeverity}
+          />
+        
+        {correct && <h2>Secret Key is Invalid</h2>}
+        <form onSubmit={handlesubmit}>
+          <div className="inputs">
+            {!isAdminChecked && (
+              <div className="input">
+                <img src={password_icon} alt="" />
+                <input
+                  type="password"
+                  placeholder="Enter the secret key"
+                  autoComplete="off"
+                  name="password"
+                  onChange={(e) => setSecretKey(e.target.value)}
                   required
-             />
-         </div>
-          
-        
-        
-         <div className="input">
-             <img src={email_icon} alt=""/>
-             <input  
-               type="email"
-               placeholder="Enter the mail"
-               autoComplete="off"
-               name="email"
-               onChange={(e)=>setemail(e.target.value)}
-               required
-             />
-         </div>
-         <div className="input">
-             <img src={password_icon} alt=""/>
-             <input  
-               type="password"
-               placeholder="Enter the password"
-               autoComplete="off"
-               name="email"
-               onChange={(e)=>setpassword(e.target.value)}
-               required
-             />
-         </div>
-         <div>
-         <button type="submit>" className="submit">Register</button>
-         <div className="forgot-password">Already have an Account ? <span onClick={()=>{navigate('/')}}> Click Here!</span></div>
-        
-         </div></div>
-      </form>
+                />
+              </div>
+            )}
+
+            <div className="input">
+              <img src={user_icon}></img>
+              <input
+                type="text"
+                placeholder="Enter Name"
+                autoComplete="off"
+                name="email"
+                onChange={(e) => setName(e.target.value)}
+                required
+              />
+            </div>
+
+            <div className="input">
+              <img src={email_icon} alt="" />
+              <input
+                type="email"
+                placeholder="Enter the mail"
+                autoComplete="off"
+                name="email"
+                onChange={(e) => setemail(e.target.value)}
+                required
+              />
+            </div>
+            <div className="input">
+              <img src={password_icon} alt="" />
+              <input
+                type="password"
+                placeholder="Enter the password"
+                autoComplete="off"
+                name="email"
+                onChange={(e) => setpassword(e.target.value)}
+                required
+              />
+            </div>
+            <div>
+              <button type="submit>" className="submit">
+                Register
+              </button>
+              <div className="forgot-password">
+                Already have an Account ?{" "}
+                <span
+                  onClick={() => {
+                    navigate("/");
+                  }}
+                >
+                  {" "}
+                  Click Here!
+                </span>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
-    </div>
-)}
+  );}
 export default Signup;
