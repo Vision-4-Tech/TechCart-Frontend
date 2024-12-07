@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import Benefits from "../Admin/Benefits";
 import TechWork from "./TechWork";
 import Footer from './Footer'
+import LiveDemo from "./LiveDemo";
 const NewHome = () => {
   return (
     <div style={{ position: "relative", height: "100vh", width: "100%" }}>
@@ -104,6 +105,7 @@ const NewHome = () => {
 
       <div className="details">
         <h2 className="heading" style={{ color: "#007bff",}}>Live Demo</h2>
+        <LiveDemo/>
       </div>
 
 
