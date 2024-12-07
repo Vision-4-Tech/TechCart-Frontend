@@ -137,7 +137,7 @@ console.log(formattedDate);
       setDeleteInitiated(true);
 
       try {
-        // Prepare data for histories API
+        
         const sessionId2 = localStorage.getItem("sessionId");
         const cartno = localStorage.getItem("cartno");
         const historyData = {
