@@ -64,11 +64,11 @@ const Footer = () => {
         <div style={{ maxWidth: "300px", margin: "10px" }}>
           <h3 style={{ color: "#007bff", marginBottom: "10px" }}>Contact Us</h3>
           <p style={{ fontSize: "0.9rem", color: "#ccc" }}>
-            Email: support@techcart.com
+            Email: techcartv2@.com
           </p>
-          <p style={{ fontSize: "0.9rem", color: "#ccc" }}>Phone: +1 234 567 890</p>
+          <p style={{ fontSize: "0.9rem", color: "#ccc" }}>Phone: +91 8792713154</p>
           <p style={{ fontSize: "0.9rem", color: "#ccc" }}>
-            Address: 123 Tech Street, Innovation City
+            Address: Yelahanka, Bengaluru
           </p>
         </div>
       </div>
