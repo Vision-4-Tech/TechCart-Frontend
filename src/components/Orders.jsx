@@ -131,10 +131,10 @@ const Orders = () => {
           <TableHead>
             <TableRow>
               <StyledTableCell>Date</StyledTableCell>
-              <StyledTableCell align="right">Amount</StyledTableCell>
+              <StyledTableCell align="center">Amount</StyledTableCell>
               <StyledTableCell align="center">Products</StyledTableCell>
-              <StyledTableCell align="right">Cart Number</StyledTableCell>
-              <StyledTableCell align="right">Transaction ID</StyledTableCell>
+              <StyledTableCell align="center">Cart Number</StyledTableCell>
+              <StyledTableCell align="center">Transaction ID</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
