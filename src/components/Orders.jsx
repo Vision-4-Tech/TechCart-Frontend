@@ -113,7 +113,7 @@ const Orders = () => {
     <div style={{ padding: "20px" }}>
       <h1
         style={{
-          paddingTop:"48px",
+          paddingTop: "48px",
           // textAlign: "center",
           fontSize: "2rem",
           fontWeight: "bold",
@@ -122,7 +122,11 @@ const Orders = () => {
       >
         Orders
       </h1>
-      <TableContainer component={Paper} elevation={4} style={{ padding: "10px" }}>
+      <TableContainer
+        component={Paper}
+        elevation={4}
+        style={{ padding: "10px" }}
+      >
         <Table sx={{ minWidth: 650 }} aria-label="orders table">
           <TableHead>
             <TableRow>
@@ -136,7 +140,10 @@ const Orders = () => {
           <TableBody>
             {data &&
               data.map((row) => (
-                <StyledTableRow key={row._id}>
+                <StyledTableRow
+                  key={row.Product}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                >
                   <StyledTableCell>{row.Date}</StyledTableCell>
                   <StyledTableCell align="right">{row.Amount}</StyledTableCell>
                   <StyledTableCell>
@@ -146,6 +153,8 @@ const Orders = () => {
                         maxWidth: 360,
                         bgcolor: "background.paper",
                       }}
+                      component="nav"
+                      aria-labelledby="nested-list-subheader"
                     >
                       <ListItemButton onClick={() => handleClick(row._id)}>
                         <ListItemText primary="View Products" />
