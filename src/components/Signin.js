@@ -1,116 +1,76 @@
 import { useEffect, useState } from "react";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
+import { useUser } from '../components/context/userContext'; 
 import './Signin.css';
 import email_icon from '../components/assets/Assets/email.png';
 import password_icon from '../components/assets/Assets/password.png';
 import { Snackbar } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import SnackbarComponent from "./Snackbar";
+
 const Signin = () => {
   const [email, setemail] = useState('');
   const [password, setpassword] = useState('');
   const [error, setError] = useState('');
-  const [name, setName] = useState('');
-  const [loading,setLoading]=useState(false)
+  const [loading, setLoading] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("error");
 
+  const { setUserDetails } = useUser();  // Use context to set user details
   const navigate = useNavigate();
-  
 
-  useEffect(()=>{
-    if(localStorage.getItem("userDetails")){
-        const {name,type}=JSON.parse(localStorage.getItem("userDetails"));
-        if(!name){
-            return
-        }
-        else{
-          if(type=="user") {navigate("/home/hero")}
-          else{
-            navigate("/Admin")
-          }
-        }
+  useEffect(() => {
+    if (localStorage.getItem("userDetails")) {
+      const { name, type } = JSON.parse(localStorage.getItem("userDetails"));
+      if (!name) return;
+      if (type === "user") {
+        navigate("/home");
+      } else {
+        navigate("/Admin");
       }
-  },[])
+    }
+  }, []);
 
   const handlesubmit = (e) => {
-  
-       setLoading(true);
+    setLoading(true);
     e.preventDefault();
-   
- 
+    
     axios
       .post("https://tech-cart-6em1.vercel.app/Login", { email, password })
       .then((result) => {
-        console.log(result);
-        console.log(result.data.name);
-          setSnackbarMessage("Logged in successfully");
-          setSnackbarSeverity("success");
-          setSnackbarOpen(true);
-        setName(result.data.user.name);
+        setSnackbarMessage("Logged in successfully");
+        setSnackbarSeverity("success");
+        setSnackbarOpen(true);
+        
+        setUserDetails(result.data.user); // Set user data in context
+
+        localStorage.setItem("userDetails", JSON.stringify(result.data.user));
+        
+        setLoading(false);
 
         if (result.data.user.type === "user") {
-          localStorage.setItem("user", result.data.name);
-          localStorage.setItem("userDetails", JSON.stringify(result.data.user));
-          setLoading(false);
-         
-            setTimeout(() => {
-              navigate("/home/hero"); // Navigate to home page after 3 seconds
-            }, 1000);
-         
-        } else if (result.data.user.type === "admin") {
-          console.log(result.data.user.name);
-         setTimeout(() => {
-           navigate("/admin/dashboard"); // Navigate to home page after 3 seconds
-         }, 1000);
-          
-           localStorage.setItem(
-             "userDetails",
-             JSON.stringify(result.data.user)
-           );
-           
-
-
+          setTimeout(() => navigate("/"), 1000);
         } else {
-          setError(result.data);
-           setSnackbarMessage(
-             result.data.message || "Registration failed"
-           );
-           setSnackbarOpen(true);
+          setTimeout(() => navigate("/admin/dashboard"), 1000);
         }
       })
-      .catch((err) =>{
-         console.log("err",err.response)
-         
-         setSnackbarMessage(
-           err.response.data.message || "Registration failed"
-         );
-         setSnackbarSeverity("error");
-         setSnackbarOpen(true);
-        }
-        
-        );
-      setLoading(false);
+      .catch((err) => {
+        setSnackbarMessage(err.response.data.message || "Login failed");
+        setSnackbarSeverity("error");
+        setSnackbarOpen(true);
+        setLoading(false);
+      });
   };
 
-   const handleCloseSnackbar = () => {
-     setSnackbarOpen(false);
-   };
- const button = () => {
-   if (loading) {
-        return <button type="button"  className="submit"  disabled>
-       <CircularProgress />
-     </button>;
-   } else {
-     return (
-       <button type="submit" className="submit">
-         Login
-       </button>
-     );
-   }
- };
+  const button = () => {
+    if (loading) {
+      return <button type="button" className="submit" disabled><CircularProgress /></button>;
+    } else {
+      return <button type="submit" className="submit">Login</button>;
+    }
+  };
 
   return (
     <div className="container">
@@ -142,28 +102,19 @@ const Signin = () => {
                 required
               />
             </div>
-            <div>
-              <div className="ml-28">{button()}</div>
-              <div className="forgot-password">
-                Don't have an account{" "}
-                <span
-                  onClick={() => {
-                    navigate("/login");
-                  }}
-                >
-                  {" "}
-                  Click Here!
-                </span>
-              </div>
+            <div className="ml-28">{button()}</div>
+            <div className="forgot-password">
+              Don't have an account?{" "}
+              <span onClick={() => navigate("/login")}>Click Here!</span>
             </div>
-            <SnackbarComponent
-              message={snackbarMessage}
-              open={snackbarOpen}
-              onClose={handleCloseSnackbar}
-              severity={snackbarSeverity}
-            />
           </div>
         </form>
+        <SnackbarComponent
+          message={snackbarMessage}
+          open={snackbarOpen}
+          onClose={() => setSnackbarOpen(false)}
+          severity={snackbarSeverity}
+        />
       </div>
     </div>
   );

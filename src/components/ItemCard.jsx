@@ -10,7 +10,6 @@ import io from 'socket.io-client';
 import DialogTitle from '@mui/material/DialogTitle';
 import SnackbarComponent from "./Snackbar";
 import { useLocation } from "react-router-dom";
-import {Snackbar} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import CartItems from "./CartItems";
 const ItemCard = () => {
@@ -93,7 +92,7 @@ console.log(formattedDate);
 
     if (userDetails==null) {
       // Navigate to login page if userDetails are not found
-      navigate('/login');
+      navigate('/signin');
     } else {
       // Parse userDetails from localStorage and update state
       const parsedUserDetails = JSON.parse(userDetails);
@@ -129,17 +128,20 @@ console.log(formattedDate);
   const handleCloseSnackbar = () => {
     setSnackbarOpen(false);
   };
+
+
   useEffect(() => {
-    session();
-    if (result.msg) {
-      const sessionid2=localStorage.getItem("sessionId")
-      // Ensure deleteCart is called only once
-       const cartno=localStorage.getItem('cartno')
-       console.log(cartno)
-      if (!deleteInitiated) {
-        setDeleteInitiated(true);
+    const performActions = async () => {
+      if (!result.msg || deleteInitiated) return;
+
+      setDeleteInitiated(true);
+
+      try {
+        // Prepare data for histories API
+        const sessionId2 = localStorage.getItem("sessionId");
+        const cartno = localStorage.getItem("cartno");
         const historyData = {
-          id:userData.id,
+          id: userData.id,
           date: formattedDate,
           Cartno: cartno,
           Name: userData.name,
@@ -147,77 +149,61 @@ console.log(formattedDate);
           Email: userData.email,
           OrderId: orderId,
           Amount: price,
-          Payment:result.msg,
-          SessionId:sessionid2,
+          Payment: result.msg,
+          SessionId: sessionId2,
         };
-  
-        fetch(`${URL}/histories`, {
+
+        // Call /histories API
+        await fetch(`${URL}/histories`, {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify(historyData),
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            // console.log("History API Response:", data);
-            localStorage.removeItem("sessionId");
-          })
-          .catch((error) => {
-            console.error("Error calling /histories API:", error);
-          });
-          console.log(orderId)
-          const TransactionData = {
-            id:userDetails._id,
-            Date: formattedDate,
-            SessionId:sessionid,
-            Cartno: cartno,
-            Name: userData.name,
-            Phone: userData.phone,
-            Email: userData.email,
-            OrderId: orderId,
-            TransactionId:responseId,
-            Products:cartItems,
-            Amount: price
-            
-          };
-    
-          fetch(`${URL}/Transactions`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(TransactionData),
-          })
-            .then((response) => response.json())
-            .then((data) => {
-              
-              
-            })
-            .catch((error) => {
-              // console.error("Error calling /transactions API:", error);
-            });
-        
-        
+        });
 
+        localStorage.removeItem("sessionId");
+
+        // Prepare data for transactions API
+        const transactionData = {
+          id: userDetails._id,
+          Date: formattedDate,
+          SessionId: sessionid,
+          Cartno: cartno,
+          Name: userData.name,
+          Phone: userData.phone,
+          Email: userData.email,
+          OrderId: orderId,
+          TransactionId: responseId,
+          Products: cartItems,
+          Amount: price,
+        };
+
+        // Call /Transactions API
+        await fetch(`${URL}/Transactions`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(transactionData),
+        });
+
+        // Perform cleanup actions
         deleteCart();
-        deleteCar(cart_no);
+        deleteCar(cartno);
         setCartid();
-
         setCartItems([]);
+        setShow(true);
 
+        navigate("/orders")
+      } catch (error) {
+        console.error("Error in API calls:", error);
       }
-     
-      
-      setShow(true);
-     
-       
-    }
+    };
+
+    performActions();
   }, [result.msg, deleteInitiated]);
+
 
   const deleteCar=async(cartid)=>{
     
-    // Replace '123456789' with the cartno you want to delete
+    
     
     const cartn=parseInt(cartid)
     
@@ -253,15 +239,15 @@ console.log(formattedDate);
           "Content-Type": "application/json",
         },
       });
+
+      console.log("suhas",response,response.ok)
      
       if (response.ok) {
-        localStorage.removeItem("sessionId");
+           localStorage.removeItem("sessionId");
            localStorage.removeItem("cartno");
            
-        const data = await response.json();
-      
         setCartItems([]);
-        window.location.reload();
+       
       } else {
         const errorMessage = await response.text();
         console.error(`Error deleting cart: ${errorMessage}`);
@@ -270,6 +256,7 @@ console.log(formattedDate);
       console.error("Network error:", error);
     }
   };
+  
   useEffect(() => {
 
    
@@ -292,7 +279,6 @@ console.log(formattedDate);
   
         if (response.ok) {
           const datas = await response.json();
-          console.log(datas)
           const data = datas.items;
           setCartItems(data);
           
@@ -403,6 +389,7 @@ console.log(formattedDate);
         document.body.appendChild(script);
       });
     };
+
  const paymentHandler=async (e)=>{
   let data=JSON.stringify({
     amount:amount,
@@ -421,10 +408,7 @@ console.log(formattedDate);
 
   axios.request(config)
   .then((response)=>{
-    console.log(response.data.id)
     setOrderId(response.data.id)
-  
-    console.log(JSON.stringify(response.data));
     const data=JSON.stringify(response.data.amount)
     setAmount(data)
      handleRazorpayScreen(response.data.amount)
@@ -437,8 +421,6 @@ console.log(formattedDate);
  const handleRazorpayScreen=async(amount)=>{
   console.log("started Screen")
   const res =await loadScript("https://checkout.razorpay.com/v1/checkout.js")
-  console.log(res)
-
   if (!res) {
     alert('Razorpay SDK failed to load. Are you online?');
     return;
@@ -452,9 +434,9 @@ console.log(formattedDate);
     description:"payment to tech cart",
     image:"image",
     handler:async function  (response){
+      console.log("respons",response)
       const body={...response};
-      console.log(response)
-      console.log(response.razorpay_payment_id);
+     
        setResponseId(response.razorpay_payment_id)
       const validateRes=await fetch(`${URL}/validate`,{
        method:"POST",
@@ -463,7 +445,10 @@ console.log(formattedDate);
          "Content-Type":"application/json"
        },
       });
+
       const jsonRes=await validateRes.json();
+            console.log("validate", jsonRes);
+
       setResult(jsonRes)
         setSnackbarMessage("Payment Successfull");
         setSnackbarSeverity("success");
@@ -521,85 +506,133 @@ console.log(formattedDate);
 }
   
   return (
-    <div className="">
-      <h1 className="cart">Cart</h1>
-      <TextField
-        type="text"
-        variant="outlined"
-        autoFocus={cartid > 0 ? false : true}
-        label="Enter Cart Number"
-        value={cart_no}
-        onChange={(e) => setCart(e.target.value)}
-        onKeyDown={handleEnterKey}
-        onClick={handleClickOpen}
-        className=" border border-zinc-950 rounded-lg focus:border-blue-500 focus:outline-none pl-3"
-      />
+    <div
+  className=""
+  style={{
+    paddingTop: "80px", // Adjusts spacing to account for the fixed header
+    paddingBottom: "20px", // Adds space at the bottom
+    backgroundColor: "#f9f9f9", // Light background for better readability
+    minHeight: "100vh", // Ensures the content takes full height
+  }}
+>
+  <h1
+    className="cart"
+    style={{
+      textAlign: "center",
+      fontSize: "2rem",
+      fontWeight: "bold",
+      color: "#333",
+      marginBottom: "20px",
+    }}
+  >
+    Cart
+  </h1>
+  <div
+    style={{
+      display: "flex",
+      justifyContent: "center",
+      marginBottom: "20px",
+    }}
+  >
+    <TextField
+      type="text"
+      variant="outlined"
+      autoFocus={cartid > 0 ? false : true}
+      label="Enter Cart Number"
+      value={cart_no}
+      onChange={(e) => setCart(e.target.value)}
+      onKeyDown={handleEnterKey}
+      onClick={handleClickOpen}
+      style={{
+        width: "300px",
+        backgroundColor: "#fff",
+      }}
+    />
+  </div>
 
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        PaperProps={{
-          component: "form",
-          onSubmit: handleSubmit,
+  <Dialog
+    open={open}
+    onClose={handleClose}
+    PaperProps={{
+      component: "form",
+      onSubmit: handleSubmit,
+    }}
+  >
+    <DialogTitle>Cart Information</DialogTitle>
+    <DialogContent>
+      <TextField
+        autoFocus
+        required
+        margin="dense"
+        id="name"
+        name="cart_no"
+        label="Enter Cart number"
+        type="text"
+        fullWidth
+        variant="standard"
+      />
+    </DialogContent>
+    <DialogActions>
+      <Button onClick={handleClose}>Cancel</Button>
+      <Button type="submit">OK</Button>
+    </DialogActions>
+  </Dialog>
+
+  <div
+    className="details"
+    style={{
+      color: "black",
+      marginTop: "17px",
+      padding: "0 20px", // Adds horizontal padding
+    }}
+  >
+    <CartItems items={items()} />
+    <SnackbarComponent
+      message={snackbarMessage}
+      open={snackbarOpen}
+      onClose={handleCloseSnackbar}
+      severity={snackbarSeverity}
+    />
+  </div>
+
+  {cartItems.length > 0 && (
+    <h3
+      style={{
+        fontWeight: "bold",
+        fontSize: "1.5rem",
+        textAlign: "center",
+        marginTop: "20px",
+      }}
+    >
+      Total: ₹{total}
+    </h3>
+  )}
+
+  <div
+    style={{
+      display: "flex",
+      justifyContent: "center",
+      marginTop: "20px",
+    }}
+  >
+    {cartItems.length > 0 && (
+      <Button
+        style={{
+          fontWeight: "bold",
+          fontSize: "1rem",
+          backgroundColor: "#007bff",
+          color: "#fff",
+          padding: "10px 20px",
         }}
+        variant="contained"
+        onClick={paymentHandler}
       >
-        <DialogTitle>Cart Information</DialogTitle>
-        <DialogContent>
-          <TextField
-            autoFocus
-            required
-            margin="dense"
-            id="name"
-            name="cart_no"
-            label="Enter Cart number"
-            type="text"
-            fullWidth
-            variant="standard"
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button type="submit">OK</Button>
-        </DialogActions>
-      </Dialog>
-      <div className="details" style={{ color: "black", marginTop: "17px" }}>
-        <CartItems items={items()} />
-        <SnackbarComponent
-          message={snackbarMessage}
-          open={snackbarOpen}
-          onClose={handleCloseSnackbar}
-          severity={snackbarSeverity}
-        />
-      </div>
-      {cartItems.length > 0 && (
-        <h3
-          style={{
-            fontWeight: "bold",
-            fontSize: "23px",
-            display: "flex",
-            justifyContent: "center",
-          }}
-          className="m-5 text-lg"
-        >
-          Total : {total}
-        </h3>
-      )}
-      <div style={{ display: "flex", justifyContent: "center" }}>
-        {cartItems.length > 0 && (
-          <Button
-            style={{
-              fontWeight: "bold",
-              fontSize: "20px",
-            }}
-            variant="contained"
-            className="payment"
-            onClick={paymentHandler}
-          >
-            Payment
-          </Button>
-        )}
-      </div>
-    </div>
+        Proceed to Payment
+      </Button>
+    )}
+  </div>
+</div>
+
   );
 };
 

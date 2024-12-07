@@ -15,30 +15,38 @@ import Inventory from "./Admin/Inventory";
 import Customer from './Admin/Customer';
 import History from './Admin/History';
 import Content from './Admin/Content';
+import NewHome from './components/NewHome';
+import NewHeader from './components/NewHeader'
+import { UserProvider } from './components/context/userContext';
 function App() {
   return (
     <div className="App">
-      <Router>
-        <Routes>
-          <Route path="/" element={<Signin />} />
-          <Route path="/login" element={<Signup />} />
-          <Route path="home" element={<Home />}>
-            <Route path="hero" element={<Hero />} />
-            <Route path="cart" element={<ItemCard />} />
-            <Route path="account" element={<Account />} />
-            <Route path="orders" element={<Orders />} />
-          </Route>
+      <UserProvider>
+        <Router>
+          <NewHeader />
+          <div style={{ marginTop: "3rem" }}>
+            <Routes>
+              <Route path="/signin" element={<Signin />} />
+              <Route path="/" element={<NewHome />} />
+              <Route path="/login" element={<Signup />} />
 
-          <Route path="/admin" element={<Admin />}>
-            <Route path='dashboard' element={<Content/>}/>
-            <Route path="inventory" element={<Inventory />} />
-            <Route path="customers" element={<Customer />} />
-            <Route path="history" element={<History />} />
-          </Route>
+              <Route path="hero" element={<Hero />} />
+              <Route path="cart" element={<ItemCard />} />
+              <Route path="account" element={<Account />} />
+              <Route path="orders" element={<Orders />} />
 
-          <Route path="/details/:id" element={<Details />}></Route>
-        </Routes>
-      </Router>
+              <Route path="/admin" element={<Admin />}>
+                <Route path="dashboard" element={<Content />} />
+                <Route path="inventory" element={<Inventory />} />
+                <Route path="customers" element={<Customer />} />
+                <Route path="history" element={<History />} />
+              </Route>
+
+              <Route path="/details/:id" element={<Details />}></Route>
+            </Routes>
+          </div>
+        </Router>
+      </UserProvider>
     </div>
   );
 }

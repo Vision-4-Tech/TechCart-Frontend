@@ -1,28 +1,33 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import List from "@mui/material/List";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemText from "@mui/material/ListItemText";
-import Collapse from "@mui/material/Collapse";
+import axios from "axios";
+import {
+  Table,
+  TableBody,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  List,
+  ListItemButton,
+  ListItemText,
+  Collapse,
+  CircularProgress,
+} from "@mui/material";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import { styled } from "@mui/material/styles";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
-import CircularProgress from "@mui/material/CircularProgress";
+import { styled } from "@mui/material/styles";
+import { useNavigate } from "react-router-dom";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.common.black,
+    backgroundColor: theme.palette.primary.main,
     color: theme.palette.common.white,
+    fontWeight: "bold",
+    fontSize: "1rem",
   },
   [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
+    fontSize: "0.9rem",
   },
 }));
 
@@ -39,7 +44,7 @@ const Orders = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState({});
-
+  const navigate = useNavigate()
   const handleClick = (id) => {
     setOpen((prevOpen) => ({
       ...prevOpen,
@@ -47,112 +52,131 @@ const Orders = () => {
     }));
   };
 
-  const fetchData=()=>{
-     const data2 = JSON.parse(localStorage.getItem("userDetails"));
-     const id = data2._id;
-           setLoading(true);
-           const apiUrl = "https://tech-cart-6em1.vercel.app/histories/orders";
+  useEffect(() => {
+    // Check if user details exist in localStorage
+    const userDetails = localStorage.getItem("userDetails");
 
-           axios
-             .post(apiUrl, { id })
-             .then((response) => {
-               
-               setData(response.data);
-               localStorage.setItem('orders',JSON.stringify(response.data))
-               setLoading(false);
-             })
-             .catch((error) => {
-               console.error("API error:", error);
-               setLoading(false);
-             });
-  }
+    if (userDetails == null) {
+      // Navigate to login page if userDetails are not found
+      navigate("/signin");
+    } 
+      // Parse userDetails from localStorage and update state
+      
+  }, [navigate]);
 
-  useEffect(()=>{
-      fetchData()
-  },[])
+  const fetchData = () => {
+    const data2 = JSON.parse(localStorage.getItem("userDetails"));
+    if(data2){
+       const id = data2._id;
+       setLoading(true);
+       const apiUrl = "https://tech-cart-6em1.vercel.app/histories/orders";
 
+       axios
+         .post(apiUrl, { id })
+         .then((response) => {
+           setData(response.data);
+           localStorage.setItem("orders", JSON.stringify(response.data));
+           setLoading(false);
+         })
+         .catch((error) => {
+           console.error("API error:", error);
+           setLoading(false);
+         });
+    }
+    else{
+      return
+    }
+    
+    
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   if (loading) {
     return (
-      <h1
+      <div
         style={{
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          fontWeight: "bold",
           height: "70vh",
         }}
       >
         <CircularProgress />
-      </h1>
+      </div>
     );
   }
 
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <StyledTableCell>Date</StyledTableCell>
-            <StyledTableCell align="right">Amount</StyledTableCell>
-            <StyledTableCell align="right">Products</StyledTableCell>
-            <StyledTableCell align="right">CartNo</StyledTableCell>
-            <StyledTableCell align="right">TransactionId</StyledTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {data &&
-            data.map((row) => (
-              <StyledTableRow
-                key={row.Product}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
-                <StyledTableCell>{row.Date}</StyledTableCell>
-                <StyledTableCell align="right">{row.Amount}</StyledTableCell>
-
-                <StyledTableCell style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
-                  <List
-                    sx={{
-                      width: "100%",
-                      maxWidth: 360,
-                      bgcolor: "background.paper",
-                    }}
-                    component="nav"
-                    aria-labelledby="nested-list-subheader"
-                  >
-                    <ListItemButton onClick={() => handleClick(row._id)}>
-                      <ListItemText primary="Products" />
-                      {open[row._id] ? <ExpandLess /> : <ExpandMore />}
-                    </ListItemButton>
-                    <Collapse in={open[row._id]} timeout="auto" unmountOnExit>
-                      <List component="div" disablePadding>
-                        {row.Products.map((product, index) => (
-                          <ListItemButton key={index} sx={{ pl: 4 }}>
-                            <ListItemText
-                              primary={`${product.Product} - ${
-                                product.Price 
-                              }`}
-                            />
-                            <ListItemText
-                              primary={`Qty - ${
-                                 product.Quantity
-                              }`}
-                            />
-                          </ListItemButton>
-                        ))}
-                      </List>
-                    </Collapse>
-                  </List>
-                </StyledTableCell>
-                <StyledTableCell align="right">{row.Cartno}</StyledTableCell>
-                <StyledTableCell align="right">
-                  {row.TransactionId}
-                </StyledTableCell>
-              </StyledTableRow>
-            ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <div style={{ padding: "20px" }}>
+      <h1
+        style={{
+          paddingTop:"48px",
+          // textAlign: "center",
+          fontSize: "2rem",
+          fontWeight: "bold",
+          marginBottom: "20px",
+        }}
+      >
+        Orders
+      </h1>
+      <TableContainer component={Paper} elevation={4} style={{ padding: "10px" }}>
+        <Table sx={{ minWidth: 650 }} aria-label="orders table">
+          <TableHead>
+            <TableRow>
+              <StyledTableCell>Date</StyledTableCell>
+              <StyledTableCell align="right">Amount</StyledTableCell>
+              <StyledTableCell align="center">Products</StyledTableCell>
+              <StyledTableCell align="right">Cart Number</StyledTableCell>
+              <StyledTableCell align="right">Transaction ID</StyledTableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {data &&
+              data.map((row) => (
+                <StyledTableRow key={row._id}>
+                  <StyledTableCell>{row.Date}</StyledTableCell>
+                  <StyledTableCell align="right">{row.Amount}</StyledTableCell>
+                  <StyledTableCell>
+                    <List
+                      sx={{
+                        width: "100%",
+                        maxWidth: 360,
+                        bgcolor: "background.paper",
+                      }}
+                    >
+                      <ListItemButton onClick={() => handleClick(row._id)}>
+                        <ListItemText primary="View Products" />
+                        {open[row._id] ? <ExpandLess /> : <ExpandMore />}
+                      </ListItemButton>
+                      <Collapse in={open[row._id]} timeout="auto" unmountOnExit>
+                        <List component="div" disablePadding>
+                          {row.Products.map((product, index) => (
+                            <ListItemButton key={index} sx={{ pl: 4 }}>
+                              <ListItemText
+                                primary={`${product.Product} - ₹${product.Price}`}
+                              />
+                              <ListItemText
+                                primary={`Qty: ${product.Quantity}`}
+                              />
+                            </ListItemButton>
+                          ))}
+                        </List>
+                      </Collapse>
+                    </List>
+                  </StyledTableCell>
+                  <StyledTableCell align="right">{row.Cartno}</StyledTableCell>
+                  <StyledTableCell align="right">
+                    {row.TransactionId}
+                  </StyledTableCell>
+                </StyledTableRow>
+              ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </div>
   );
 };
 

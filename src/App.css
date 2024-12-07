@@ -3,3 +3,121 @@
     padding: 0;
     box-sizing: border-box;
 }
+
+.headers{
+         width: 100%;
+          position: absolute;
+          color: white;
+          margin: 0;
+          top: 2%;
+          display: flex;
+    
+      
+}
+
+.list{
+    display: flex;
+    font-size: 16px;
+    gap: 2rem;
+    
+ 
+}
+li{
+    cursor: pointer;
+}
+
+.demobtn{
+            margin-top: 34px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+}
+
+.details{
+          padding: 20px;
+          text-align: center;
+          color: black;
+         
+          margin-top: 1rem;
+          
+}
+.bimg{
+    border-radius: 50%;
+    object-fit: cover;
+    width: 80px;
+    height: 80px;
+    
+}
+
+.imgHolder{
+     width: 100%;
+    display: flex;
+    gap: 23px;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+    margin-top: 1rem;
+   
+   
+}
+.imgCover{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+
+.benefit-card:hover {
+  transform: translateY(-12px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+img {
+  max-width: 100%;
+  display: block;
+  border-radius: 10px;
+}
+
+h2 {
+  font-family: "Roboto", sans-serif;
+}
+
+p {
+  font-family: "Roboto", sans-serif;
+}
+
+/* Header styling */
+.header-container {
+    margin-bottom: 43px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.btn-group{
+  display: flex;
+
+  gap: 1rem;
+}
+/* Account page styling */
+.account-container {
+  
+  margin-bottom: 43px;
+  padding: 20px;
+  text-align: center;
+}

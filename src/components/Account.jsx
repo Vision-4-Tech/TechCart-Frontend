@@ -2,16 +2,27 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { TextField, Button } from '@mui/material';
 import './Account.css';
+import { useUser } from './context/userContext';
 
 const Account = () => {
   const [editMode, setEditMode] = useState(false);
   const navigate = useNavigate();
+  const { user, clearUserDetails } = useUser();
   const [userData, setUserData] = useState({
     name: "",
     email: "",
     phone: "",
     password: ""
   });
+
+   
+
+
+   const handleLogout = () => {
+     clearUserDetails();
+     localStorage.removeItem("userDetails");
+     navigate("/signin"); // Redirect to login page
+   };
 
   useEffect(() => {
     const userDetails = localStorage.getItem('userDetails');
@@ -49,10 +60,10 @@ const Account = () => {
   return (
     <div className="account-container">
       <h2 className="account-title">Your Account Info</h2>
-        <section className="user-details-form">
+      <section className="user-details-form">
         <table className="user-details-table">
           <tbody>
-            <tr >
+            <tr>
               <td className="label">Name</td>
               <td>
                 <TextField
@@ -80,20 +91,20 @@ const Account = () => {
                 />
               </td>
             </tr>
-           
           </tbody>
         </table>
-        </section>
-        {editMode ? (
-          <Button className="save-button" variant="contained" type="submit" onClick={handleSubmit}>
-            Save
-          </Button>
-        ) : (
-          <Button className="edit-button" variant="contained"  onClick={handleEdit}>
-            Edit
-          </Button>
-        )}
-     
+      </section>
+      
+       
+
+        <Button
+          variant="contained"
+          onClick={handleLogout}
+          style={{ marginTop: "25px" }}
+        >
+          Logout
+        </Button>
+      
     </div>
   );
 };

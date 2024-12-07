@@ -98,7 +98,7 @@ const  Signup=()=>{
           return;
         } else {
           if (type == "user") {
-            navigate("/home/hero");
+            navigate("/");
           } else {
             navigate("/Admin");
           }
@@ -142,7 +142,7 @@ const  Signup=()=>{
            setSnackbarOpen(true);
            
            setTimeout(()=>{
-                navigate("/");
+                navigate("/signin");
            },2000)
            
           
@@ -245,7 +245,7 @@ const  Signup=()=>{
                 Already have an Account ?{" "}
                 <span
                   onClick={() => {
-                    navigate("/");
+                    navigate("/signin");
                   }}
                 >
                   {" "}
