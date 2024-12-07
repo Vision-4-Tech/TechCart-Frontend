@@ -121,3 +121,10 @@ p {
   padding: 20px;
   text-align: center;
 }
+
+
+ul{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
