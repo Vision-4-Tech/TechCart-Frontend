@@ -1,24 +1,24 @@
 import { useEffect, useState } from "react";
-import axios from 'axios';
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useUser } from '../components/context/userContext'; 
-import './Signin.css';
-import email_icon from '../components/assets/Assets/email.png';
-import password_icon from '../components/assets/Assets/password.png';
+import { useUser } from "../components/context/userContext";
+import "./Signin.css";
+import email_icon from "../components/assets/Assets/email.png";
+import password_icon from "../components/assets/Assets/password.png";
 import { Snackbar } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import SnackbarComponent from "./Snackbar";
 
 const Signin = () => {
-  const [email, setemail] = useState('');
-  const [password, setpassword] = useState('');
-  const [error, setError] = useState('');
+  const [email, setemail] = useState("");
+  const [password, setpassword] = useState("");
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("error");
 
-  const { setUserDetails } = useUser();  // Use context to set user details
+  const { setUserDetails } = useUser(); // Use context to set user details
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -36,18 +36,18 @@ const Signin = () => {
   const handlesubmit = (e) => {
     setLoading(true);
     e.preventDefault();
-    
+
     axios
       .post("https://tech-cart-6em1.vercel.app/Login", { email, password })
       .then((result) => {
         setSnackbarMessage("Logged in successfully");
         setSnackbarSeverity("success");
         setSnackbarOpen(true);
-        
+
         setUserDetails(result.data.user); // Set user data in context
 
         localStorage.setItem("userDetails", JSON.stringify(result.data.user));
-        
+
         setLoading(false);
 
         if (result.data.user.type === "user") {
@@ -66,9 +66,17 @@ const Signin = () => {
 
   const button = () => {
     if (loading) {
-      return <button type="button" className="submit" disabled><CircularProgress /></button>;
+      return (
+        <button type="button" className="submit" disabled>
+          <CircularProgress />
+        </button>
+      );
     } else {
-      return <button type="submit" className="submit">Login</button>;
+      return (
+        <button type="submit" className="submit">
+          Login
+        </button>
+      );
     }
   };
 

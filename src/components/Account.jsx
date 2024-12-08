@@ -1,39 +1,37 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { TextField, Button } from '@mui/material';
-import './Account.css';
-import { useUser } from './context/userContext';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { TextField, Button } from "@mui/material";
+import "./Account.css";
+import { useUser } from "./context/userContext";
 
 const Account = () => {
   const [editMode, setEditMode] = useState(false);
   const navigate = useNavigate();
-  const { user, clearUserDetails } = useUser();
+  const { userDetails, setUserDetails } = useUser(); // Access user details from context
   const [userData, setUserData] = useState({
     name: "",
     email: "",
     phone: "",
-    password: ""
+    password: "",
   });
 
-   
+  const handleLogout = () => {
+    setUserDetails(null); // Clear user details from context
+    localStorage.removeItem("userDetails"); // Optional, remove from localStorage
+    navigate("/signin"); // Redirect to login page
+  };
 
-
-   const handleLogout = () => {
-     clearUserDetails();
-     localStorage.removeItem("userDetails");
-     navigate("/signin"); // Redirect to login page
-   };
-
+  // Update user data when the context value (userDetails) changes
   useEffect(() => {
-    const userDetails = localStorage.getItem('userDetails');
-    const parsedUserDetails = userDetails ? JSON.parse(userDetails) : {};
-    setUserData({
-      name: parsedUserDetails.name || "",
-      email: parsedUserDetails.email || "",
-      phone: parsedUserDetails.phone || "",
-      password: parsedUserDetails.password || ""
-    });
-  }, [navigate]);
+    if (userDetails) {
+      setUserData({
+        name: userDetails.name || "",
+        email: userDetails.email || "",
+        phone: userDetails.phone || "",
+        password: userDetails.password || "",
+      });
+    }
+  }, [userDetails]); // Dependency on userDetails to update when it changes
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -46,17 +44,13 @@ const Account = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setEditMode(false);
-   
+    setUserDetails(userData); // Save updated user data to context (and optionally localStorage)
   };
 
   const handleEdit = () => {
-    console.log("edit");
     setEditMode(true);
   };
 
-  useEffect(() => {
-    console.log('Updated editMode:', editMode);
-  }, [editMode]);
   return (
     <div className="account-container">
       <h2 className="account-title">Your Account Info</h2>
@@ -94,17 +88,33 @@ const Account = () => {
           </tbody>
         </table>
       </section>
-      
-       
 
+      <Button
+        variant="contained"
+        onClick={handleEdit}
+        style={{ marginTop: "25px", marginRight: "10px" }}
+        disabled={editMode} // Disable edit button when in edit mode
+      >
+        Edit
+      </Button>
+
+      {editMode && (
         <Button
           variant="contained"
-          onClick={handleLogout}
-          style={{ marginTop: "25px" }}
+          onClick={handleSubmit}
+          style={{ marginTop: "25px", marginRight: "10px" }}
         >
-          Logout
+          Save Changes
         </Button>
-      
+      )}
+
+      <Button
+        variant="contained"
+        onClick={handleLogout}
+        style={{ marginTop: "25px" }}
+      >
+        Logout
+      </Button>
     </div>
   );
 };

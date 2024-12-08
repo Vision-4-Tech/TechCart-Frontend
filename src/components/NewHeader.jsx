@@ -1,22 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useUser } from "./context/userContext";
+import { useUser } from "./context/userContext"; // Import useUser hook
 import { Avatar } from "@mui/material";
 import { red } from "@mui/material/colors";
 
 const Header = () => {
-  const { user } = useUser();
-  const [name,setName] = useState(null)
+  const { userDetails } = useUser(); // Get userDetails directly from context
   const navigate = useNavigate();
-  useEffect(() => {
-    const userDetails = localStorage.getItem("userDetails");
-    const parsedUserDetails = userDetails ? JSON.parse(userDetails) : {};
-     setName(parsedUserDetails.name || "");
-  }, [navigate]);
-
 
   const handleUserClick = () => {
-    navigate("/account"); 
+    navigate("/account"); // Navigate to account page
   };
 
   return (
@@ -102,13 +95,13 @@ const Header = () => {
               </Link>
             </li>
             <li>
-              {name ? (
+              {userDetails ? (
                 <Avatar
                   sx={{ bgcolor: red[500] }}
                   onClick={handleUserClick}
                   style={{ cursor: "pointer" }}
                 >
-                  {name[0]}{" "}
+                  {userDetails.name?.[0]}{" "}
                   {/* Display the first letter of the user's name */}
                 </Avatar>
               ) : (

@@ -52,17 +52,17 @@ const Orders = () => {
     }));
   };
 
-  useEffect(() => {
-    // Check if user details exist in localStorage
-    const userDetails = localStorage.getItem("userDetails");
+  // useEffect(() => {
+  //   // Check if user details exist in localStorage
+  //   const userDetails = localStorage.getItem("userDetails");
 
-    if (userDetails == null) {
-      // Navigate to login page if userDetails are not found
-      navigate("/signin");
-    } 
-      // Parse userDetails from localStorage and update state
+  //   if (userDetails == null) {
+  //     // Navigate to login page if userDetails are not found
+  //     navigate("/signin");
+  //   } 
+  //     // Parse userDetails from localStorage and update state
       
-  }, [navigate]);
+  // }, [navigate]);
 
   const fetchData = () => {
     const data2 = JSON.parse(localStorage.getItem("userDetails"));
@@ -131,7 +131,7 @@ const Orders = () => {
           <TableHead>
             <TableRow>
               <StyledTableCell>Date</StyledTableCell>
-              <StyledTableCell align="center">Amount</StyledTableCell>
+              <StyledTableCell align="center n">Amount</StyledTableCell>
               <StyledTableCell align="center">Products</StyledTableCell>
               <StyledTableCell align="center">Cart Number</StyledTableCell>
               <StyledTableCell align="center">Transaction ID</StyledTableCell>

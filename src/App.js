@@ -18,6 +18,7 @@ import Content from './Admin/Content';
 import NewHome from './components/NewHome';
 import NewHeader from './components/NewHeader'
 import { UserProvider } from './components/context/userContext';
+import ProtectedRoute from './components/ProtectedRoute';
 function App() {
   return (
     <div className="App">
@@ -31,9 +32,12 @@ function App() {
               <Route path="/login" element={<Signup />} />
 
               <Route path="hero" element={<Hero />} />
-              <Route path="cart" element={<ItemCard />} />
+              <Route element={<ProtectedRoute />}>
+                <Route path="cart" element={<ItemCard />} />
+
+                <Route path="orders" element={<Orders />} />
+              </Route>
               <Route path="account" element={<Account />} />
-              <Route path="orders" element={<Orders />} />
 
               <Route path="/admin" element={<Admin />}>
                 <Route path="dashboard" element={<Content />} />

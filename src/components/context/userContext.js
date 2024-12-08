@@ -1,27 +1,28 @@
-import { createContext, useState, useContext } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 
-// Create a Context
-export const UserContext = createContext();
+// Create context for user data
+const UserContext = createContext();
 
-// Create a custom hook to use the context
-export const useUser = () => {
-  return useContext(UserContext);
-};
+export const useUser = () => useContext(UserContext);
 
-// Create a provider to wrap the components and provide context values
 export const UserProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  // Initialize userDetails from localStorage or default to null
+  const [userDetails, setUserDetails] = useState(() => {
+    const savedUserDetails = localStorage.getItem("userDetails");
+    return savedUserDetails ? JSON.parse(savedUserDetails) : null;
+  });
 
-  const setUserDetails = (userData) => {
-    setUser(userData);
-  };
-
-  const clearUserDetails = () => {
-    setUser(null);
-  };
+  useEffect(() => {
+    if (userDetails) {
+      // Persist userDetails in localStorage whenever it changes
+      localStorage.setItem("userDetails", JSON.stringify(userDetails));
+    } else {
+      localStorage.removeItem("userDetails"); // Remove from localStorage if null
+    }
+  }, [userDetails]); // This will run every time userDetails is updated
 
   return (
-    <UserContext.Provider value={{ user, setUserDetails, clearUserDetails }}>
+    <UserContext.Provider value={{ userDetails, setUserDetails }}>
       {children}
     </UserContext.Provider>
   );
