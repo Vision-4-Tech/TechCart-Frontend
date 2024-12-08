@@ -86,27 +86,27 @@ console.log(formattedDate);
   const userDetails = localStorage.getItem('userDetails');
   
   
-  // useEffect(() => {
-  //   // Check if user details exist in localStorage
-  //   const userDetails = localStorage.getItem('userDetails');
+  useEffect(() => {
+    // Check if user details exist in localStorage
+    const userDetails = localStorage.getItem('userDetails');
 
-  //   if (userDetails==null) {
-  //     // Navigate to login page if userDetails are not found
-  //     navigate('/signin');
-  //   } else {
-  //     // Parse userDetails from localStorage and update state
-  //     const parsedUserDetails = JSON.parse(userDetails);
-  //     setUserData({
-  //       name: parsedUserDetails.name || '',
-  //       email: parsedUserDetails.email || '',
-  //       phone: parsedUserDetails.phone || '',
-  //       password: parsedUserDetails.password || '',
-  //       id:parsedUserDetails._id||"",
-  //     });
-  //     console.log("id", parsedUserDetails._id);
+    if (userDetails==null) {
+      // Navigate to login page if userDetails are not found
+      navigate('/');
+    } else {
+      // Parse userDetails from localStorage and update state
+      const parsedUserDetails = JSON.parse(userDetails);
+      setUserData({
+        name: parsedUserDetails.name || '',
+        email: parsedUserDetails.email || '',
+        phone: parsedUserDetails.phone || '',
+        password: parsedUserDetails.password || '',
+        id:parsedUserDetails._id||"",
+      });
+      console.log("id", parsedUserDetails._id);
      
-  //   }
-  // }, [navigate]);
+    }
+  }, [navigate]);
 
   const cart_no = localStorage.getItem("cartno")?localStorage.getItem("cartno"):"";
   
