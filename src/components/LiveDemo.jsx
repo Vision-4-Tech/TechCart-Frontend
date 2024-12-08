@@ -1,5 +1,6 @@
-import React from 'react'
+import React from "react";
 import { Card, CardContent, Typography, Box } from "@mui/material";
+import video from '../components/assets/Video/VN20241208_175309.mp4'
 const LiveDemo = () => {
   return (
     <Box
@@ -13,7 +14,7 @@ const LiveDemo = () => {
     >
       <Card
         sx={{
-          maxWidth: 400,
+          maxWidth: 800,
           padding: 3,
           textAlign: "center",
           boxShadow: 3,
@@ -21,16 +22,23 @@ const LiveDemo = () => {
         }}
       >
         <CardContent>
-          <Typography variant="h4" component="div" gutterBottom>
-            Coming Soon!
+          <Typography variant="h6" gutterBottom>
+            Live Demo
           </Typography>
-          <Typography variant="body1" color="textSecondary">
-            We are working hard to bring this feature to you. Stay tuned!
-          </Typography>
+          <video
+            controls
+            style={{
+              width: "100%",
+              borderRadius: "8px",
+            }}
+          >
+            <source src={video} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
         </CardContent>
       </Card>
     </Box>
   );
-}
+};
 
-export default LiveDemo
+export default LiveDemo;
