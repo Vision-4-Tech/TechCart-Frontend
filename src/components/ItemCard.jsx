@@ -408,61 +408,72 @@ console.log(formattedDate);
 
   axios.request(config)
   .then((response)=>{
+    console.log(response)
     setOrderId(response.data.id)
     const data=JSON.stringify(response.data.amount)
     setAmount(data)
-     handleRazorpayScreen(response.data.amount)
+     handleRazorpayScreen(response.data.amount,response.data.id)
+     console.log("orderid",orderId)
   })
   .catch((error)=>{
     console.log("error",error)
   })
       
  }
- const handleRazorpayScreen=async(amount)=>{
-  console.log("started Screen")
+ const handleRazorpayScreen=async(amount,razorpay_orderId)=>{
+  console.log("started Screen", razorpay_orderId);
   const res =await loadScript("https://checkout.razorpay.com/v1/checkout.js")
   if (!res) {
     alert('Razorpay SDK failed to load. Are you online?');
     return;
   }
-  
-  const options={
-    key:"rzp_test_L1JPeGnZbS2ffv",
-    amount:amount*100,
-    currency:'INR',
-    name:"Tech Cart",
-    description:"payment to tech cart",
-    image:"image",
-    handler:async function  (response){
-      console.log("respons",response)
-      const body={...response};
+  console.log(orderId)
+  const options = {
+    key: "rzp_test_L1JPeGnZbS2ffv",
+    amount: amount * 100,
+    currency: "INR",
+    name: "Tech Cart",
+    description: "payment to tech cart",
+    image: "image",
+    order_id: razorpay_orderId,
+    handler: async function (response) {
      
-       setResponseId(response.razorpay_payment_id)
-      const validateRes=await fetch(`${URL}/validate`,{
-       method:"POST",
-       body:JSON.stringify(body),
-       headers:{
-         "Content-Type":"application/json"
-       },
+      console.log("response", response);
+      const body = { ...response };
+
+      setResponseId(response.razorpay_payment_id);
+      const validateRes = await fetch(`${URL}/validate`, {
+        method: "POST",
+        body: JSON.stringify(body),
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
 
-      const jsonRes=await validateRes.json();
-            console.log("validate", jsonRes);
-
-      setResult(jsonRes)
-        setSnackbarMessage("Payment Successfull");
-        setSnackbarSeverity("success");
-        setSnackbarOpen(true);
+      const jsonRes = await validateRes.json();
+      console.log("validate", jsonRes);
+     if(jsonRes.msg == "success"){
+            setResult(jsonRes);
+      setSnackbarMessage("Payment Successfull");
+      setSnackbarSeverity("success");
+      setSnackbarOpen(true);
       console.log(jsonRes);
-   },
-    prefil:{
-      name:"Suhas",
-      email:"suhas123.p@mail.com"
+     }
+     else{
+                  setSnackbarMessage("Payment Cancelled");
+                  setSnackbarSeverity("error");
+                  setSnackbarOpen(true);  
+     }
+      
     },
-    theme:{
-      color:"#F4C430"
-    }
-  }
+    prefil: {
+      name: "Suhas",
+      email: "suhas123.p@mail.com",
+    },
+    theme: {
+      color: "#F4C430",
+    },
+  };
 
   console.log("open")
   const paymentObject=new window.Razorpay(options)
