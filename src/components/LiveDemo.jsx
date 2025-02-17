@@ -25,15 +25,7 @@ const LiveDemo = () => {
           <Typography variant="h6" gutterBottom>
             Live Demo
           </Typography>
-          <video
-            controls
-            style={{
-              width: "100%",
-              borderRadius: "8px",
-            }}
-          >
-            Your browser does not support the video tag.
-          </video>
+          
         </CardContent>
       </Card>
     </Box>
