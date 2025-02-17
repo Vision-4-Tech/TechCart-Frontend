@@ -36,7 +36,7 @@ const Header = () => {
         }}
       >
         {/* Logo */}
-        <h1 style={{ fontSize: "1.5rem", fontWeight: "bold" }}>Tech Cart</h1>
+        <h1 style={{ fontSize: "1.5rem", fontWeight: "bold" }}>AutoCartX</h1>
 
         {/* Navigation Links */}
         <nav>
