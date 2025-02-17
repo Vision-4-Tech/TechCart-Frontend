@@ -1,6 +1,6 @@
 import React from "react";
 import { Card, CardContent, Typography, Box } from "@mui/material";
-import video from '../components/assets/Video/VN20241208_175309.mp4'
+// import video from '../components/assets/Video/VN20241208_175309.mp4'
 const LiveDemo = () => {
   return (
     <Box
@@ -32,7 +32,7 @@ const LiveDemo = () => {
               borderRadius: "8px",
             }}
           >
-            <source src={video} type="video/mp4" />
+{/*             <source src={video} type="video/mp4" /> */}
             Your browser does not support the video tag.
           </video>
         </CardContent>
